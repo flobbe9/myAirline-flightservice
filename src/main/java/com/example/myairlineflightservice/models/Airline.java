@@ -1,5 +1,6 @@
 package com.example.myAirlineFlightservice.models;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Airline {
 
+    @NotBlank
     private String name;
 
 
