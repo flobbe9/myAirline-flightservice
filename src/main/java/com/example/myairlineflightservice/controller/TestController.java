@@ -75,6 +75,19 @@ public class TestController {
     }
 
 
+    @PostMapping("/login")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Successfully logged in.")
+    public void login(@RequestBody LoginWrapper loginWrapper) {
+
+        if (loginWrapper.getPassword() == null) 
+            throw new IllegalStateException("Password missing.");
+
+        // check if email exists (ignore password for now)
+        if (!testRepository.exists(loginWrapper.getEmail()))
+            throw new IllegalStateException("Wrong email or password. Please try again.");
+    }
+
+
     @GetMapping("/")
     public String index() {
 
@@ -120,5 +133,16 @@ public class TestController {
         private String surName;
 
         public UserDetailsWrapper() {}
+    }
+
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    static class LoginWrapper {
+        private String email;
+        private String password;
+
+        public LoginWrapper() {}
     }
 }
