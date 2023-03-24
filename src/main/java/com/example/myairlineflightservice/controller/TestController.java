@@ -70,7 +70,6 @@ public class TestController {
         if (testRepository.exists(email))
             throw new IllegalStateException("This email has already been registered. Please try a different one.");
 
-
         testRepository.save(email);
     }
 
@@ -131,6 +130,7 @@ public class TestController {
         private String email;
         private String firstName;
         private String surName;
+        private String password;
 
         public UserDetailsWrapper() {}
     }
