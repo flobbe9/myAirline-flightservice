@@ -30,10 +30,4 @@ public class Airline {
 
     
     public Airline() {}
-
-    // RYAN_AIR,
-    // WIZZ_AIR,
-    // TYRKISH_AIRLINES,
-    // QATAR_AIRLINES,
-    // LUFTHANSA
 }

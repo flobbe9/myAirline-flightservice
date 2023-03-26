@@ -30,10 +30,4 @@ public class Airport {
 
 
     public Airport() {}
-
-    // Hamburger Flughafen
-    // Münchner Flughafen
-    // Frankfurter Flughafen
-    // Berliner Flughafen
-    // Dortmunder Flughafen
 }
