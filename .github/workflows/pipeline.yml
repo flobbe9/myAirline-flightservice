@@ -1,0 +1,17 @@
+name: myAirline
+run-name: ${{ github.actor }} is testing myAirline.
+on: [push]
+jobs:
+  myAirline-flightService:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository 
+        uses: actions/checkout@v3
+      - name: Set Java version
+        uses: actions/setup-java@v3.9.0
+        with: 
+          distribution: microsoft
+          java-version: '17'
+      - name: Run tests
+        run: gradle clean build
