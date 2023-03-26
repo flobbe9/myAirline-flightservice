@@ -17,7 +17,7 @@ public class FlightService {
     public Flight getById(Long id) {
         
         return flightRepository.findById(id).orElseThrow(() ->
-            new IllegalStateException("Could not find flight with name " + id + "."));
+            new IllegalStateException("Could not find flight: " + id + "."));
     }
 
 

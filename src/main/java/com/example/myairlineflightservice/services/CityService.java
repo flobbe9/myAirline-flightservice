@@ -17,7 +17,7 @@ public class CityService {
     public City getByName(String name) {
         
         return cityRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find city with name " + name + "."));
+            new IllegalStateException("Could not find city: " + name + "."));
     }
 
 

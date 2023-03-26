@@ -17,7 +17,7 @@ public class CountryService {
     public Country getByName(String name) {
         
         return countryRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find country with name " + name + "."));
+            new IllegalStateException("Could not find country: " + name + "."));
     }
 
 

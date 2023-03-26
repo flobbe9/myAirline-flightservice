@@ -17,7 +17,7 @@ public class AirlineService {
     public Airline getByName(String name) {
         
         return airlineRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find airline with name " + name + "."));
+            new IllegalStateException("Could not find airline: " + name + "."));
     }
 
 
