@@ -11,7 +11,7 @@ import lombok.Setter;
 
 
 /**
- * Class representing an airline.
+ * Class representing a city.
  * 
  * @since 0.0.1
  */
@@ -19,8 +19,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Airline {
-
+public class City {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,12 +28,12 @@ public class Airline {
     @NotBlank
     private String name;
 
-    
-    public Airline() {}
 
-    // RYAN_AIR,
-    // WIZZ_AIR,
-    // TYRKISH_AIRLINES,
-    // QATAR_AIRLINES,
-    // LUFTHANSA
+    public City() {}
+
+    // Hamburger
+    // Münchner
+    // Frankfurter
+    // Berliner
+    // Dortmunder
 }

@@ -1,4 +1,4 @@
-package com.example.myAirlineFlightservice.repositories;
+package com.example.myAirlineFlightservice.testStuff;
 
 import java.util.LinkedList;
 import java.util.List;

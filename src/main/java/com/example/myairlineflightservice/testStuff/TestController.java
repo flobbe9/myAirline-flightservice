@@ -1,4 +1,4 @@
-package com.example.myAirlineFlightservice.controller;
+package com.example.myAirlineFlightservice.testStuff;
 
 import java.util.List;
 
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.myAirlineFlightservice.repositories.TestRepository;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
