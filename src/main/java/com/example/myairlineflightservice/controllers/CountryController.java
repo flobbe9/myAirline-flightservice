@@ -55,7 +55,7 @@ public class CountryController {
 
 
     @GetMapping("/exists")
-    public boolean existsByName(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
+    public boolean exists(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
 
         return countryService.exists(name);
     }

@@ -53,7 +53,7 @@ public class AirportController {
 
 
     @GetMapping("/exists")
-    public boolean existsByName(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
+    public boolean exists(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
 
         return airportService.exists(name);
     }

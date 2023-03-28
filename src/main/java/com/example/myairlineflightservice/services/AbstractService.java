@@ -29,7 +29,7 @@ public abstract class AbstractService<E extends AbstractEntity> {
 
     public boolean exists(@NotBlank String name) {
 
-        return repository.existsByName(name);
+        return repository.exists(name);
     }
 
 
