@@ -14,10 +14,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       # - run: docker-compose up -d
-      # - uses: mirromutth/mysql-action@v1.1
-      #   with:
-      #     mysql root password: mysql
-      #     mysql database: myAirline
-      #     mysql user: mysql
-      #     mysql password: mysql
-      - run: gradle clean build --stacktrace
+      - run: gradle bootRun
