@@ -14,8 +14,7 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Docker-compose
-        uses: isbang/compose-action@v1.4.1
-        with: 
-          services: db
+        # uses: isbang/compose-action@v1.4.1
+        run: docker-compose -f "docker-compose.yml" up
       - name: Run tests
         run: gradle clean build
