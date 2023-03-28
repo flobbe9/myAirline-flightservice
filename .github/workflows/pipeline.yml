@@ -14,4 +14,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - run: docker-compose up -d
-      - run: gradle bootRun
+      - run: gradle clean build
