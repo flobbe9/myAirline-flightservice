@@ -2,7 +2,7 @@ name: myAirline
 run-name: ${{ github.actor }} is testing myAirline.
 on: [push]
 jobs:
-  myAirline-flightService:
+  Tests:
     runs-on: windows-latest
 
     steps:
