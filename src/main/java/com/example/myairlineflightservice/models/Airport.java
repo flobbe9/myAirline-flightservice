@@ -1,12 +1,15 @@
 package com.example.myAirlineFlightservice.models;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -18,16 +21,25 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
-public class Airport {
+@NoArgsConstructor
+public class Airport extends AbstractEntity {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "airport_id_generator", 
+                      strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+                      parameters = {
+                        @Parameter(name ="initial_value", value = "7")
+                      })
+    @GeneratedValue(generator = "airport_id_generator")
     private Long id;
 
-    @NotBlank
-    private String name;
+    @NotBlank(message = "CityName cannot be blank.")
+	  @Column(updatable = false)
+    private String cityName;
 
-
-    public Airport() {}
+	
+	public Airport(String name, String cityName) {
+		super(name, "airport");
+		this.cityName = cityName;
+	}
 }

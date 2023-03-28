@@ -1,58 +1,69 @@
 package com.example.myAirlineFlightservice.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.repositories.AirportRepository;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 
 @Service
-public class AirportService {
+@Validated
+public class AirportService extends AbstractService<Airport> {
+
+    private AirportRepository airportRepository;
     
     @Autowired
-    private AirportRepository airportRepository;
+    private CityService cityService;
 
-
-    public Airport getByName(String name) {
-        
-        return airportRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find airport: " + name + "."));
+    
+    public AirportService(AirportRepository repository) {
+        super(repository, "airport");
+        this.airportRepository = repository;
     }
 
 
-    // TODO: works only at 7th time
-    public Airport save(Airport airport) {
+    @Override
+    public Airport save(@Valid Airport airport) {
 
-        System.out.println(airport.getId());
+        String airportName = airport.getName();
 
-        String name = airport.getName();
+        // airport should not exist
+        if (exists(airportName))
+            throw new IllegalStateException("Failed to save aiport: " + airportName + ". Airport already exists.");
 
-        if (exists(name))
-            throw new IllegalStateException("Failed to save aiport: " + name + ". Airport already exists.");
+        // city should exist
+        cityService.getByName(airport.getCityName());
 
         return airportRepository.save(airport);
     }
 
 
-    public boolean exists(String name) {
+    public void deleteAllByCityName(@NotBlank String cityName) {
 
-        return airportRepository.existsByName(name);
+        // city should exist
+        cityService.getByName(cityName);
+
+        List<Airport> airports = airportRepository.findAllByCityName(cityName);
+
+        // should'nt have related entites
+        if (hasRelatedEntites(airports))
+            throw new IllegalStateException("Failed to delete airports in city: " + cityName + ". Delete related entities first.");
+
+        airportRepository.deleteAllByCityName(cityName);
     }
 
 
-    public void deleteByName(String name) {
-      
-        // should exist
-        if (!exists(name))
-            throw new IllegalStateException("Failed to delete aiport: " + name + ". Not found in db before deletion.");
+    private boolean hasRelatedEntites(List<Airport> airports) {
 
-        airportRepository.deleteByName(name);
+        // TODO: implement if neccessary
 
-        // should be deleted
-        if (exists(name))
-            throw new IllegalStateException("Failed to delete airport: " + name + ". Still in db after deletion.");
+        return false;
     }
 }

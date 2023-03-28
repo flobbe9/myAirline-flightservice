@@ -1,6 +1,6 @@
 package com.example.myAirlineFlightservice.repositories;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,12 +10,10 @@ import com.example.myAirlineFlightservice.models.Airport;
 
 
 @Repository
-public interface AirportRepository extends JpaRepository<Airport, Long> {
+public interface AirportRepository extends AbstractRepository<Airport>, JpaRepository<Airport, Long> {
     
-    Optional<Airport> findByName(String name);
-
-    Boolean existsByName(String name);
-
     @Transactional
-    void deleteByName(String name);
+    void deleteAllByCityName(String cityName);
+
+    List<Airport> findAllByCityName(String cityName);
 }

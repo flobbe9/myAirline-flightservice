@@ -8,27 +8,14 @@ import com.example.myAirlineFlightservice.repositories.AirlineRepository;
 
 
 @Service
-public class AirlineService {
+public class AirlineService extends AbstractService<Airline> {
     
     @Autowired
     private AirlineRepository airlineRepository;
-
-
-    public Airline getByName(String name) {
-        
-        return airlineRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find airline: " + name + "."));
-    }
-
-
-    public Airline save(Airline airline) {
-
-        return airlineRepository.save(airline);
-    }
-
-
-    public void delete(Airline airline) {
-
-        airlineRepository.delete(airline);
+    
+    
+    public AirlineService(AirlineRepository repository) {
+        super(repository, "airline");
+        this.airlineRepository = repository;
     }
 }

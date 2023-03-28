@@ -2,33 +2,41 @@ package com.example.myAirlineFlightservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Country;
+import com.example.myAirlineFlightservice.repositories.CityRepository;
 import com.example.myAirlineFlightservice.repositories.CountryRepository;
+
+import jakarta.validation.constraints.NotBlank;
 
 
 @Service
-public class CountryService {
-    
-    @Autowired
+@Validated
+public class CountryService extends AbstractService<Country> {
+
     private CountryRepository countryRepository;
 
+    @Autowired
+    private CityRepository cityRepository;
 
-    public Country getByName(String name) {
-        
-        return countryRepository.findByName(name).orElseThrow(() ->
-            new IllegalStateException("Could not find country: " + name + "."));
+
+    public CountryService(CountryRepository repository) {
+        super(repository, "country");
+        this.countryRepository = repository;
     }
 
 
-    public Country save(Country country) {
+    @Override
+    public void delete(@NotBlank String name) {
 
-        return countryRepository.save(country);
-    }
+        // country should exist
+        getByName(name);
 
+        // should have no related cities
+        if (!cityRepository.findAllByCountryName(name).isEmpty())
+            throw new IllegalStateException("Failed to delete country: " + name + ". Delete related entities first.");
 
-    public void delete(Country country) {
-
-        countryRepository.delete(country);
+        countryRepository.deleteByName(name);
     }
 }

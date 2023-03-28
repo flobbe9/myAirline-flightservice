@@ -1,7 +1,5 @@
 package com.example.myAirlineFlightservice.repositories;
 
-import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +7,6 @@ import com.example.myAirlineFlightservice.models.Airline;
 
 
 @Repository
-public interface AirlineRepository extends JpaRepository<Airline, Long> {
+public interface AirlineRepository extends AbstractRepository<Airline>, JpaRepository<Airline, Long> {
     
-    Optional<Airline> findByName(String name);
 }

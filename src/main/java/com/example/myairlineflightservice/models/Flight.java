@@ -3,6 +3,9 @@ package com.example.myAirlineFlightservice.models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +28,12 @@ import lombok.Setter;
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "flight_id_generator", 
+                    strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+                    parameters = {
+                        @Parameter(name ="initial_value", value = "1")
+                    })
+    @GeneratedValue(generator = "flight_id_generator")
     private Long id;
 
     @NotNull

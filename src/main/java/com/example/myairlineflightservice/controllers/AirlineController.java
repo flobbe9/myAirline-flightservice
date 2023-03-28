@@ -1,22 +1,30 @@
 package com.example.myAirlineFlightservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.myAirlineFlightservice.models.Airline;
 import com.example.myAirlineFlightservice.services.AirlineService;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 
 @RestController
 @RequestMapping("/airline")
+@Validated
 public class AirlineController {
     
     @Autowired
@@ -24,24 +32,40 @@ public class AirlineController {
 
 
     @GetMapping("/getByName")
-    public Airline getByName(@RequestParam @NotBlank String name) {
+    public Airline getByName(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
 
         return airlineService.getByName(name);
     }
 
 
-    // TODO: only name instead of object??
-    @PostMapping("/save")
-    public Airline save(@RequestBody Airline airline) {
+    @GetMapping("/getById/{id}") 
+    public Airline getById(@NotNull 
+                           @Min(value = 1, message = "Id must be greater than 0.")
+                           @PathVariable long id) {
 
-        return airlineService.save(airline);
+        return airlineService.getById(id);
+    }
+
+
+    @PostMapping("/save")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Airline saved.")
+    public void save(@Valid @RequestBody Airline airline) {
+
+        airlineService.save(airline);
+    }
+
+
+    @GetMapping("/exists")
+    public boolean existsByName(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
+
+        return airlineService.exists(name);
     }
 
     
-    // TODO: only name instead of object??
     @DeleteMapping("/delete")
-    public void delete(@RequestBody Airline airline) {
+    @ResponseStatus(code = HttpStatus.OK, reason = "Airline deleted.")
+    public void delete(@NotBlank(message = "Cannot leave parameter 'name' empty.") @RequestParam String name) {
 
-        airlineService.delete(airline);
+        airlineService.delete(name);
     }
 }
