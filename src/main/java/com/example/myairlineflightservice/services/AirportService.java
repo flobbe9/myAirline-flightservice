@@ -10,6 +10,7 @@ import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.repositories.AirportRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
@@ -28,8 +29,14 @@ public class AirportService extends AbstractService<Airport> {
         this.airportRepository = repository;
     }
 
+    
+    public Airport getById(@Min(1) long id) {
 
-    @Override
+        return airportRepository.findById(id).orElseThrow(() ->
+            new IllegalStateException("Could not find airport with id: " + id + "."));
+    }
+
+
     public Airport save(@Valid Airport airport) {
 
         String airportName = airport.getName();

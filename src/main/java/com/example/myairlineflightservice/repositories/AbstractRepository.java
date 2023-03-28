@@ -8,9 +8,9 @@ import jakarta.transaction.Transactional;
 
 public interface AbstractRepository<E extends AbstractEntity> {
 
-    E save(E entity);
+    // Object save(Object entity);
 
-    Optional<E> findById(long id);
+    // Optional<E> findById(long id);
 
     Optional<E> findByName(String name);
 

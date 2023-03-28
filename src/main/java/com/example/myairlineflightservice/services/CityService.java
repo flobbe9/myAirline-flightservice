@@ -12,6 +12,7 @@ import com.example.myAirlineFlightservice.repositories.AirportRepository;
 import com.example.myAirlineFlightservice.repositories.CityRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
@@ -34,7 +35,13 @@ public class CityService extends AbstractService<City> {
     }
 
 
-    @Override
+    public City getById(@Min(1) long id) {
+
+        return cityRepository.findById(id).orElseThrow(() ->
+            new IllegalStateException("Could not find city with id: " + id + "."));
+    }
+
+
     public City save(@Valid City city) {
 
         String cityName = city.getName();
