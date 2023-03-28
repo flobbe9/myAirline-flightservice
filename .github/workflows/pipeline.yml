@@ -13,7 +13,7 @@ jobs:
         with: 
           distribution: 'temurin'
           java-version: '17'
-      - run: docker-compose up -d
+      # - run: docker-compose up -d
       # - uses: mirromutth/mysql-action@v1.1
       #   with:
       #     mysql root password: mysql
