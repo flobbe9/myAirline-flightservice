@@ -2,7 +2,7 @@ name: myAirline
 run-name: ${{ github.actor }} is testing myAirline.
 on: [push]
 jobs:
-  Push_to_Git:
+  Push_to_main:
     runs-on: ubuntu-latest
 
     steps:
@@ -15,5 +15,7 @@ jobs:
           java-version: '17'
       - name: Docker-compose
         uses: isbang/compose-action@v1.4.1
+        with: 
+          services: db
       - name: Run tests
         run: gradle clean build
