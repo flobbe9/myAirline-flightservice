@@ -1,5 +1,9 @@
 package com.example.myAirlineFlightservice.controllers;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +22,6 @@ import com.example.myAirlineFlightservice.services.FlightService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -31,41 +34,59 @@ public class FlightController {
     private FlightService flightService;
 
 
-    // @GetMapping("/getByName")
-    // public Flight getByName(@NotBlank @RequestParam String name) {
-
-    //     return flightService.getByName(name);
-    // }
-
-
     @GetMapping("/getById/{id}") 
     public Flight getById(@NotNull 
-                           @Min(1) 
-                           @PathVariable long id) {
+                          @Min(value = 1, message = "Id must be greater than 0.")
+                          @PathVariable long id) {
 
         return flightService.getById(id);
     }
 
 
-    // @PostMapping("/save")
-    // @ResponseStatus(code = HttpStatus.OK, reason = "Flight saved.")
-    // public void save(@Valid @RequestBody Flight flight) {
+    @GetMapping("/getByNumber")
+    public Flight getByNumber(@NotNull 
+                              @Min(value = 0, message = "Number cannot be negative.")
+                              @RequestParam long number) {
 
-    //     flightService.save(flight);
-    // }
+        return flightService.getByNumber(number);
+    }
 
 
-    // @GetMapping("/exists")
-    // public boolean existsByName(@NotBlank @RequestParam String name) {
+    @GetMapping("/getAllByDepartureTime")
+    public List<Flight> getAllByDepartureTime(@NotNull(message = "Departure time cannot be null.") 
+                                              @RequestParam LocalTime departureTime) {
 
-    //     return flightService.exists(name);
-    // }
+        return flightService.getAllByDepartureTimeAfter(departureTime);
+    }
+
+
+    @GetMapping("/getAllByDepartureDate")
+    public List<Flight> getAllByDepartureDate(@NotNull(message = "Departure date cannot be null.")
+                                             @RequestParam LocalDate departureDate) {
+
+        return flightService.getAllByDepartureDate(departureDate);
+    }
+
+
+    @PostMapping("/save")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Flight saved.")
+    public void save(@Valid @RequestBody Flight flight) {
+
+        flightService.save(flight);
+    }
+
+
+    @GetMapping("/exists")
+    public boolean exists(@Min(value = 0, message = "Number cannot be negative.") @RequestParam long number) {
+
+        return flightService.exists(number);
+    }
 
     
-    // @DeleteMapping("/delete")
-    // @ResponseStatus(code = HttpStatus.OK, reason = "Flight deleted.")
-    // public void delete(@NotBlank @RequestParam String name) {
+    @DeleteMapping("/delete")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Flight deleted.")
+    public void delete(@Min(value = 0, message = "Number must not be negative.") @RequestParam long number) {
 
-    //     flightService.deleteByName(name);
-    // }
+        flightService.delete(number);
+    }
 }
