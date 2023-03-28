@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing myAirline.
 on: [push]
 jobs:
   Push_to_Git:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository 
@@ -11,7 +11,7 @@ jobs:
       - name: Set Java version
         uses: actions/setup-java@v3.9.0
         with: 
-          distribution: microsoft
+          distribution: 'temurin'
           java-version: '17'
       - name: Start MySQL with docker-compose
         uses: isbang/compose-action@v1.4.1
