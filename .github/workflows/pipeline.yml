@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is testing myAirline.
 on: [push]
 jobs:
   Push_to_main:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository 
@@ -11,8 +11,13 @@ jobs:
       - name: Set Java version
         uses: actions/setup-java@v3.9.0
         with: 
-          distribution: microsoft
+          distribution: 'temurin'
           java-version: '17'
-      - run: docker-compose up -d
+      # - run: docker-compose up -d
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql root password: mysql
+          mysql user: mysql
+          mysql password: mysql
       - run: gradle test
-      - run: docker-compose down
+      # - run: docker-compose down
