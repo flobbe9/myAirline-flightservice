@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Checkout repository 
         uses: actions/checkout@v3
-      - name: Setup Java JDK
+      - name: Setup JDK
         uses: actions/setup-java@v2.5.1
         with: 
           distribution: 'temurin'

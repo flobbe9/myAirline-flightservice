@@ -1,13 +1,14 @@
-package com.example.myairlineflightservice;
+package com.example.myAirlineFlightservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class MyairlineFlightServiceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+@SpringBootTest
+class MyAirlineFlightServiceApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
 
 }
