@@ -1,14 +1,15 @@
 package com.example.myAirlineFlightservice.services;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.repositories.AirportRepository;
 import com.example.myAirlineFlightservice.repositories.FlightRepository;
+import com.example.myAirlineFlightservice.utils.HttpRequestSender;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -26,6 +27,8 @@ public class AirportService extends AbstractService<Airport> {
 
     @Autowired
     private FlightRepository flightRepository;
+
+    private static final String BASE_URL_FLIGHT_SERVICE = "http://localhost:4001";
 
     
     public AirportService(AirportRepository repository) {
@@ -56,21 +59,23 @@ public class AirportService extends AbstractService<Airport> {
     }
 
 
-    public Airport update(@Valid Airport airport) {
+    public void update(@Valid Airport newAirport) {
 
-        Long id = airport.getId();
+        Long id = newAirport.getId();
 
         // id should not be null
         if (id == null)
             throw new IllegalStateException("Failed to update airport: Id cannot be null.");
 
         // should exist
-        getById(id);
+        String oldName = getById(id).getName();
+        String newName = newAirport.getName();
 
-        // update flights
+        // update related flights
+        String url = BASE_URL_FLIGHT_SERVICE + "/flight/updateAllByAirportName?oldAirportName=" + oldName + "&newAirportName=" + newName;
+        HttpRequestSender.sendSimpleRequest(url, HttpMethod.PUT);
         
-
-        return airportRepository.save(airport);
+        airportRepository.save(newAirport);
     }
 
 

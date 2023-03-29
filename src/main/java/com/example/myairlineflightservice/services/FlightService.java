@@ -25,9 +25,6 @@ public class FlightService {
     private FlightRepository flightRepository;
 
     @Autowired
-    private AirlineService airlineService;
-
-    @Autowired
     private AirportService airportService;
 
 
@@ -61,13 +58,17 @@ public class FlightService {
     }
 
 
+    public List<Flight> getAllByAirport(@NotBlank String airportName) {
+
+        // airport should exist
+        airportService.getByName(airportName);
+
+        return flightRepository.findAllByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
+    }
+
     public Flight save(@Valid Flight flight) {
 
         long number = flight.getNumber();
-
-        // should be valid 
-        if (!isFlightValid(flight))
-            throw new IllegalStateException("Failed to save flight: " + number + ". Flight invalid.");
 
         // should not exist
         if (exists(number))
@@ -77,7 +78,44 @@ public class FlightService {
     }
 
 
-    // TODO: make update method, consider updatetable=false for flight entity
+    public Flight update(@Valid Flight flight) {
+
+        Long id = flight.getId();
+
+        // id should not be null
+        if (id == null)
+            throw new IllegalStateException("Failed to update flight. Id cannot be null.");
+
+        // flight should exist
+        getById(id);
+
+        // TODO: update relations (maybe seats?)
+
+        return flightRepository.save(flight);
+    }
+
+    
+    public List<Flight> updateAllByAirportName(@NotBlank String oldAirportName, @NotBlank String newAirportName) {
+
+        // find old flights
+        List<Flight> relatedFlights = flightRepository.findAllByDepartureAirportNameOrArrivalAirportName(oldAirportName, oldAirportName);
+
+        // set new airport names
+        relatedFlights.forEach(flight -> {
+                        // set departureAirportName
+                        if (flight.getDepartureAirportName().equals(oldAirportName)) {
+                            flight.setDepartureAirportName(newAirportName);
+
+                        // set arrivalAirportName
+                        } else if (flight.getArrivalAirportName().equals(oldAirportName))
+                            flight.setArrivalAirportName(newAirportName);
+
+                        // save to db
+                        update(flight);
+                    });
+
+        return relatedFlights;
+    }
 
 
     public boolean exists(@Min(0) long number) {
@@ -105,24 +143,6 @@ public class FlightService {
     public void deleteAllByAirportName(@NotBlank String airportName) {
 
         flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
-    }
-
-
-    private boolean isFlightValid(@Valid Flight flight) {
-
-        return 
-            // airline should exist
-            airlineService.exists(flight.getAirlineName()) &&
-
-            // airports should exist
-            airportService.exists(flight.getDepartureAirportName()) &&
-            airportService.exists(flight.getArrivalAirportName()) &&
-
-            // dates should be in order
-            flight.areDatesInOrder() &&
-
-            // time should be in order
-            flight.isTimeInOrder();
     }
 
 
