@@ -22,6 +22,7 @@ import com.example.myAirlineFlightservice.services.FlightService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -82,11 +83,26 @@ public class FlightController {
         return flightService.exists(number);
     }
 
+
+    @GetMapping("/existsByAirport")
+    public boolean existsByAirport(@NotBlank(message = "Airport name cannot be blank.") @RequestParam String airportName) {
+
+        return flightService.existsByAirport(airportName);
+    }
+
     
     @DeleteMapping("/delete")
     @ResponseStatus(code = HttpStatus.OK, reason = "Flight deleted.")
     public void delete(@Min(value = 0, message = "Number must not be negative.") @RequestParam long number) {
 
         flightService.delete(number);
+    }
+
+
+    @DeleteMapping("/deleteAllByAirport")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Flight deleted.")
+    public void deleteAllByAirport(@NotBlank(message = "Airport name cannot be blank.") @RequestParam String airportName) {
+        
+        flightService.deleteAllByAirportName(airportName);
     }
 }

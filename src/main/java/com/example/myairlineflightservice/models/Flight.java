@@ -79,4 +79,19 @@ public class Flight {
 
         return this.number.toString();
     }
+
+
+    public boolean areDatesInOrder() {
+
+        return this.departureDate.equals(this.arrivalDate) || this.departureDate.isBefore(this.arrivalDate);
+    }
+
+
+    public boolean isTimeInOrder() {
+
+        if (this.departureDate.equals(this.arrivalDate))
+            return this.departureTime.isBefore(this.arrivalTime);
+
+        return true;
+    }
 }

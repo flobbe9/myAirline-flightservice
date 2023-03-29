@@ -19,17 +19,24 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     Optional<Flight> findByNumber(long number);
 
     boolean existsByNumber(long number);
+    
+    boolean existsByDepartureAirportNameOrArrivalAirportName(String departureAirportName, String arrivalAirportName);
+    
+    List<Flight> findAllByDepartureTimeAfter(LocalTime departureTime);
+    
+    List<Flight> findAllByArrivalTimeBefore(LocalTime arrivalTime);
+    
+    List<Flight> findAllByDepartureTimeAfterAndArrivalTimeBefore(LocalTime departureTime, LocalTime arrivalTime);
+    
+    List<Flight> findAllByDepartureDate(LocalDate departureDate);
+    
+    List<Flight> findAllByDepartureAirportNameOrArrivalAirportName(String departureAirportName, String arrivalAirportName);
+    
+    List<Flight> findAllByDepartureAirportNameAndArrivalAirportName(String departureAirportName, String arrivalAirportName);
 
     @Transactional
     void deleteByNumber(long number);
 
-    List<Flight> findAllByDepartureTimeAfter(LocalTime departureTime);
-
-    List<Flight> findAllByArrivalTimeBefore(LocalTime arrivalTime);
-
-    List<Flight> findAllByDepartureTimeAfterAndArrivalTimeBefore(LocalTime departureTime, LocalTime arrivalTime);
-
-    List<Flight> findAllByDepartureAirportNameAndArrivalAirportName(String departureAirport, String arrivalAirport);
-
-    List<Flight> findAllByDepartureDate(LocalDate departureDate);
+    @Transactional
+    void deleteAllByDepartureAirportNameOrArrivalAirportName(String departureAirportName, String arrivalAirportName);
 }

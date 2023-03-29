@@ -13,6 +13,7 @@ import com.example.myAirlineFlightservice.repositories.FlightRepository;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
@@ -22,6 +23,12 @@ public class FlightService {
     
     @Autowired
     private FlightRepository flightRepository;
+
+    @Autowired
+    private AirlineService airlineService;
+
+    @Autowired
+    private AirportService airportService;
 
 
     public Flight getById(@Min(0) long id) {
@@ -56,16 +63,21 @@ public class FlightService {
 
     public Flight save(@Valid Flight flight) {
 
-        // TODO: check that fields exist in db already
-
         long number = flight.getNumber();
+
+        // should be valid 
+        if (!isFlightValid(flight))
+            throw new IllegalStateException("Failed to save flight: " + number + ". Flight invalid.");
 
         // should not exist
         if (exists(number))
-            throw new IllegalStateException("Failed to save aiport: " + number + ". Flight already exists.");
+            throw new IllegalStateException("Failed to save flight: " + number + ". Flight already exists.");
 
         return flightRepository.save(flight);
     }
+
+
+    // TODO: make update method, consider updatetable=false for flight entity
 
 
     public boolean exists(@Min(0) long number) {
@@ -74,13 +86,43 @@ public class FlightService {
     }
 
 
+    public boolean existsByAirport(@NotBlank String airportName) {
+
+        return flightRepository.existsByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
+    }
+
+
     public void delete(@Min(0) long number) {
       
         // should exist
         if (!exists(number))
-            throw new IllegalStateException("Failed to delete aiport: " + number + ". Not found in db before deletion.");
+            throw new IllegalStateException("Failed to delete flight: " + number + ". Not found in db before deletion.");
 
         flightRepository.deleteByNumber(number);
+    }
+
+
+    public void deleteAllByAirportName(@NotBlank String airportName) {
+
+        flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
+    }
+
+
+    private boolean isFlightValid(@Valid Flight flight) {
+
+        return 
+            // airline should exist
+            airlineService.exists(flight.getAirlineName()) &&
+
+            // airports should exist
+            airportService.exists(flight.getDepartureAirportName()) &&
+            airportService.exists(flight.getArrivalAirportName()) &&
+
+            // dates should be in order
+            flight.areDatesInOrder() &&
+
+            // time should be in order
+            flight.isTimeInOrder();
     }
 
 
@@ -91,6 +133,6 @@ public class FlightService {
      */
     private boolean isDateValid(@NotNull LocalDate departureDate) {
 
-        return departureDate.equals(departureDate) && departureDate.isAfter(LocalDate.now());
+        return departureDate.equals(departureDate) || departureDate.isAfter(LocalDate.now());
     }
 }
