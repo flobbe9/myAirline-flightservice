@@ -1,5 +1,5 @@
 name: myAirline
-run-name: ${{ github.actor }} is testing myAirline.
+run-name: ${{ github.event.head_commit.message }}
 on: [push]
 jobs:
   Push_to_main:
@@ -14,5 +14,4 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - run: docker-compose up -d
-      - run: sleep 5s
-      - run: gradle clean build
+      - run: gradle bootRun
