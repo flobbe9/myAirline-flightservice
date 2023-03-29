@@ -42,4 +42,11 @@ public class City extends AbstractEntity {
 		super(name, "city");
 		this.countryName = countryName;
 	} 
+
+
+  @Override
+	public String toString() {
+
+		return super.name;
+	}
 }

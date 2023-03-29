@@ -35,4 +35,11 @@ public class Country extends AbstractEntity {
 	public Country(String name) {
 		super(name, "country");
 	}
+
+
+  @Override
+	public String toString() {
+
+		return super.name;
+	}
 }

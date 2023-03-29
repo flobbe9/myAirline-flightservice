@@ -33,6 +33,14 @@ public class Airline extends AbstractEntity {
 
 
 	public Airline(String name) {
+
 		super(name, "airline");
+	}
+
+
+	@Override
+	public String toString() {
+
+		return super.name;
 	}
 }
