@@ -11,6 +11,8 @@ import com.example.myAirlineFlightservice.models.Airport;
 
 @Repository
 public interface AirportRepository extends AbstractRepository<Airport>, JpaRepository<Airport, Long> {
+
+    boolean existsByCityName(String cityName);
     
     @Transactional
     void deleteAllByCityName(String cityName);

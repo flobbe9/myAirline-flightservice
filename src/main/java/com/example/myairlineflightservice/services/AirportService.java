@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.repositories.AirportRepository;
+import com.example.myAirlineFlightservice.repositories.FlightRepository;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -22,6 +23,9 @@ public class AirportService extends AbstractService<Airport> {
     
     @Autowired
     private CityService cityService;
+
+    @Autowired
+    private FlightRepository flightRepository;
 
     
     public AirportService(AirportRepository repository) {
@@ -49,6 +53,38 @@ public class AirportService extends AbstractService<Airport> {
         cityService.getByName(airport.getCityName());
 
         return airportRepository.save(airport);
+    }
+
+
+    public Airport update(@Valid Airport airport) {
+
+        Long id = airport.getId();
+
+        // id should not be null
+        if (id == null)
+            throw new IllegalStateException("Failed to update airport: Id cannot be null.");
+
+        // should exist
+        getById(id);
+
+        // update flights
+        
+
+        return airportRepository.save(airport);
+    }
+
+
+    @Override
+    public void delete(@NotBlank String name) {
+
+        // should exist
+        exists(name);
+
+        // no related flights should exist
+        if (flightRepository.existsByDepartureAirportNameOrArrivalAirportName(name, name))
+            throw new IllegalStateException("Failed to delete airport: " + name + ". Delete related entities first.");
+      
+        airportRepository.deleteByName(name);
     }
 
 
