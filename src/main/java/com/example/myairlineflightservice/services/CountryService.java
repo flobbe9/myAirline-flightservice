@@ -55,7 +55,7 @@ public class CountryService extends AbstractService<Country> {
         getByName(name);
 
         // should have no related cities
-        if (!cityRepository.findAllByCountryName(name).isEmpty())
+        if (cityRepository.existsByCountryName(name))
             throw new IllegalStateException("Failed to delete country: " + name + ". Delete related entities first.");
 
         countryRepository.deleteByName(name);

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.models.City;
 import com.example.myAirlineFlightservice.repositories.AirportRepository;
 import com.example.myAirlineFlightservice.repositories.CityRepository;
@@ -63,8 +62,8 @@ public class CityService extends AbstractService<City> {
         // should exist
         getByName(name);
 
-        // no related cities should exist
-        if (!airportRepository.findAllByCityName(name).isEmpty())
+        // no related airports should exist
+        if (airportRepository.existsByCityName(name))
             throw new IllegalStateException("Failed to delete city: " + name + ". Delete related entities first.");
       
         cityRepository.deleteByName(name);
@@ -88,11 +87,10 @@ public class CityService extends AbstractService<City> {
 
     private boolean hasRelatedEntites(List<City> cities) {
 
-        // airports
+        // find related airports
         for (City city : cities) {
-            List<Airport> airports = airportRepository.findAllByCityName(city.getName());
-            
-            if (!airports.isEmpty())
+
+            if (!airportRepository.existsByCityName(city.getName()))
                 return true;
         }
 

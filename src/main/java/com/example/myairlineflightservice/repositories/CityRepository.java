@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 
 @Repository
 public interface CityRepository extends AbstractRepository<City>, JpaRepository<City, Long> {
+
+    boolean existsByCountryName(String countryName);
     
     @Transactional
     void deleteAllByCountryName(String countryName);
