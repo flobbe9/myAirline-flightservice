@@ -6,21 +6,23 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.myAirlineFlightservice.annotations.ValidFlight;
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.services.FlightService;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -69,11 +71,42 @@ public class FlightController {
     }
 
 
+    @GetMapping("/getAllByAirport")
+    public List<Flight> getAllByAirport(@NotBlank(message = "Airport name cannot be blank.")
+                                        @RequestParam String airportName) {
+        
+        return flightService.getAllByAirport(airportName);
+    }
+
+
     @PostMapping("/save")
     @ResponseStatus(code = HttpStatus.OK, reason = "Flight saved.")
-    public void save(@Valid @RequestBody Flight flight) {
+    public void save(@Validated(ValidFlight.class) @RequestBody Flight flight, Errors errors) {
+
+        if (errors.hasErrors()) 
+            throw new IllegalStateException(errors.getAllErrors().get(0).getDefaultMessage());
 
         flightService.save(flight);
+    }
+
+
+    @PutMapping("/update")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Flight updated.")
+    public void update(@Validated(ValidFlight.class) @RequestBody Flight flight, Errors errors) {
+        
+        if (errors.hasErrors()) 
+            throw new IllegalStateException(errors.getAllErrors().get(0).getDefaultMessage());
+
+        flightService.update(flight);
+    }
+
+
+    @PutMapping("/updateAllByAirportName")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Flights updated.")
+    public void updateAllByAirportName(@NotBlank(message = "Airport name cannot be blank.") @RequestParam String oldAirportName,
+                                       @NotBlank(message = "Airport name cannot be blank.") @RequestParam String newAirportName) {
+
+        flightService.updateAllByAirportName(oldAirportName, newAirportName);
     }
 
 
