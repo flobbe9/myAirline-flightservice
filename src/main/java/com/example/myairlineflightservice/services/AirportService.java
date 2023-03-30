@@ -2,6 +2,7 @@ package com.example.myAirlineFlightservice.services;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -28,7 +29,8 @@ public class AirportService extends AbstractService<Airport> {
     @Autowired
     private FlightRepository flightRepository;
 
-    private static final String BASE_URL_FLIGHT_SERVICE = "http://localhost:4001";
+    @Value("${baseUrl}")
+    private String baseUrl;
 
     
     public AirportService(AirportRepository repository) {
@@ -73,7 +75,7 @@ public class AirportService extends AbstractService<Airport> {
         String newName = newAirport.getName();
 
         // update related flights
-        String url = BASE_URL_FLIGHT_SERVICE + "/flight/updateAllByAirportName?oldAirportName=" + oldName + "&newAirportName=" + newName;
+        String url = baseUrl + "/flight/updateAllByAirportName?oldAirportName=" + oldName + "&newAirportName=" + newName;
         HttpRequestSender.sendSimpleRequest(url, HttpMethod.PUT);
         
         airportRepository.save(newAirport);
