@@ -89,8 +89,7 @@ public class CityService extends AbstractService<City> {
 
         // find related airports
         for (City city : cities) {
-
-            if (!airportRepository.existsByCityName(city.getName()))
+            if (airportRepository.existsByCityName(city.getName()))
                 return true;
         }
 
