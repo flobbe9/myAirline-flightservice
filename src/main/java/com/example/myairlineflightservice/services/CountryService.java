@@ -40,7 +40,7 @@ public class CountryService extends AbstractService<Country> {
 
         String airportName = country.getName();
 
-        // airport should not exist
+        // country should not exist
         if (exists(airportName))
             throw new IllegalStateException("Failed to save aiport: " + airportName + ". Country already exists.");
 

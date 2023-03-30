@@ -112,8 +112,6 @@ public class FlightService {
         // flight should exist
         getById(id);
 
-        // TODO: update relations (maybe seats?)
-
         return flightRepository.save(flight);
     }
 
@@ -176,6 +174,6 @@ public class FlightService {
      */
     private boolean isDateValid(@NotNull LocalDate departureDate) {
 
-        return departureDate.equals(departureDate) || departureDate.isAfter(LocalDate.now());
+        return departureDate.equals(LocalDate.now()) || departureDate.isAfter(LocalDate.now());
     }
 }
