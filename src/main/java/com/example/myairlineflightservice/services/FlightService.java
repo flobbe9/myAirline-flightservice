@@ -3,12 +3,14 @@ package com.example.myAirlineFlightservice.services;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Flight;
+import com.example.myAirlineFlightservice.models.FlightClass;
 import com.example.myAirlineFlightservice.repositories.FlightRepository;
 
 import jakarta.validation.Valid;
@@ -65,6 +67,27 @@ public class FlightService {
 
         return flightRepository.findAllByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
     }
+
+    
+    public List<Flight> getAllByBasePriceLessThanEqual(@Min(0) double basePrice) {
+
+        return flightRepository.findAllByBasePriceLessThanEqual(basePrice);
+    }
+
+
+    public List<Flight> getAllBySeatsTotalGreaterThanEqual(@Min(0) int seatsTotal) {
+
+        return flightRepository.findAllBySeatsTotalGreaterThanEqual(seatsTotal);
+    }
+
+
+    public List<Flight> getAllByFlightClass(@NotNull FlightClass flightClass) {
+
+        return flightRepository.findAll().stream()
+                                         .filter(flight -> flight.getFlightClasses().contains(flightClass))
+                                         .collect(Collectors.toList());
+    }
+
 
     public Flight save(@Valid Flight flight) {
 

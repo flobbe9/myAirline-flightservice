@@ -32,6 +32,7 @@ public class AirportService extends AbstractService<Airport> {
 
     
     public AirportService(AirportRepository repository) {
+        
         super(repository, "airport");
         this.airportRepository = repository;
     }
@@ -83,7 +84,7 @@ public class AirportService extends AbstractService<Airport> {
     public void delete(@NotBlank String name) {
 
         // should exist
-        exists(name);
+        getByName(name);
 
         // no related flights should exist
         if (flightRepository.existsByDepartureAirportNameOrArrivalAirportName(name, name))
@@ -110,7 +111,13 @@ public class AirportService extends AbstractService<Airport> {
 
     private boolean hasRelatedEntites(List<Airport> airports) {
 
-        // TODO: implement if neccessary
+        // find related flights
+        for (Airport airport : airports) {
+            String airportName = airport.getName();
+
+            if (flightRepository.existsByDepartureAirportNameOrArrivalAirportName(airportName, airportName))
+                return true;
+        }
 
         return false;
     }

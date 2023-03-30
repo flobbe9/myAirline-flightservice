@@ -18,6 +18,7 @@ public class AirlineService extends AbstractService<Airline> {
     
     
     public AirlineService(AirlineRepository repository) {
+        
         super(repository, "airline");
         this.airlineRepository = repository;
     }

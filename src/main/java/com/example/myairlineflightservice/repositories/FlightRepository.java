@@ -34,6 +34,10 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
     
     List<Flight> findAllByDepartureAirportNameAndArrivalAirportName(String departureAirportName, String arrivalAirportName);
 
+    List<Flight> findAllByBasePriceLessThanEqual(double basePrice);
+
+    List<Flight> findAllBySeatsTotalGreaterThanEqual(int seatsTotal);
+
     @Transactional
     void deleteByNumber(long number);
 

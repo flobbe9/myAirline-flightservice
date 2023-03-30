@@ -2,6 +2,7 @@ package com.example.myAirlineFlightservice.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -10,11 +11,17 @@ import com.example.myAirlineFlightservice.annotations.ValidFlight;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -75,9 +82,35 @@ public class Flight {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate arrivalDate;
 
-    // price
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinColumn(name = "flight_id")
+    @NotEmpty(message = "Flight class cannot be emtpy.", groups = {ValidFlight.class})
+    @Enumerated(EnumType.STRING)
+    private Set<FlightClass> flightClasses;
 
-    // seat stuff
+    @NotNull(message = "Base price cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Base price cannot be negative.", groups = {ValidFlight.class})
+    private double basePrice;
+
+    @NotNull(message = "Number of normal seats cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of normal seats cannot be negative.", groups = {ValidFlight.class})
+    private int numNormalSeats;
+
+    @NotNull(message = "Number of corridor seats cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of corridor seats cannot be negative.", groups = {ValidFlight.class})
+    private int numCorridorSeats;
+
+    @NotNull(message = "Number of window seats cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of window seats cannot be negative.", groups = {ValidFlight.class})
+    private int numWindowSeats;
+
+    @NotNull(message = "Number of foot room seats cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of foot room seats cannot be negative.", groups = {ValidFlight.class})
+    private int numFootRoomSeats;
+
+    @NotNull(message = "Number of total seats cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of total seats cannot be negative.", groups = {ValidFlight.class})
+    private int seatsTotal;
 
 
     @Override

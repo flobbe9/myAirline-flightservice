@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.myAirlineFlightservice.annotations.ValidFlight;
 import com.example.myAirlineFlightservice.models.Flight;
+import com.example.myAirlineFlightservice.models.FlightClass;
 import com.example.myAirlineFlightservice.services.FlightService;
 
 import jakarta.validation.constraints.Min;
@@ -76,6 +77,30 @@ public class FlightController {
                                         @RequestParam String airportName) {
         
         return flightService.getAllByAirport(airportName);
+    }
+
+
+    @GetMapping("/getAllByBasePrice")
+    public List<Flight> getAllByBasePriceLessThanEqual(@Min(value = 0, message = "Base price cannot be negative.")
+                                                       @RequestParam double basePrice) {
+
+        return flightService.getAllByBasePriceLessThanEqual(basePrice);
+    }
+
+
+    @GetMapping("/getAllBySeatsTotal")
+    public List<Flight> getAllBySeatsTotalGreaterThanEqual(@Min(value = 0, message = "Seats total cannot be negative.")
+                                                           @RequestParam int seatsTotal) {
+
+        return flightService.getAllByBasePriceLessThanEqual(seatsTotal);
+    }
+
+
+    @GetMapping("/getAllByFlightClass")
+    public List<Flight> getAllByFlightClass(@NotNull(message = "Flight class cannot be null.") 
+                                            @RequestParam FlightClass flightClass) {
+
+        return flightService.getAllByFlightClass(flightClass);
     }
 
 
