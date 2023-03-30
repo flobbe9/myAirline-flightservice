@@ -1,7 +1,9 @@
-version: "3.9"
+version: "v2.15.1"
+
 services:
     db:
-        image: mysql
+        image: flobbe10/myairline-db:0.0.1
+        container_name: myairline-db
         ports:
             - 3306:3306
         environment:
@@ -9,3 +11,17 @@ services:
             MYSQL_PASSWORD: mysql
             MYSQL_DATABASE: myAirline
             MYSQL_ROOT_PASSWORD: mysql
+
+    flight-service:
+        build: .
+        image: myairline-flightservice:0.0.1
+        container_name: myairline-flightservice
+        ports: 
+            - 4001:4001
+        depends_on:
+            - db
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/myAirline
+            - SPRING_DATASOURCE_USERNAME=mysql
+            - SPRING_DATASOURCE_PASSWORD=mysql
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=create

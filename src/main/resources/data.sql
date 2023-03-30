@@ -38,9 +38,9 @@ INSERT INTO flight(id, number, airline_name, departure_airport_name, arrival_air
 
 
 -- flight_flight_classes
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(1, "ECONOMY");
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(1, "BUSINESS");
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(2, "ECONOMY");
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(3, "BUSINESS");
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(4, "ECONOMY");
-INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(4, "BUSINESS");
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(1, 'ECONOMY');
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(1, 'BUSINESS');
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(2, 'ECONOMY');
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(3, 'BUSINESS');
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(4, 'ECONOMY');
+INSERT INTO flight_flight_classes(flight_id, flight_classes) VALUES(4, 'BUSINESS');
