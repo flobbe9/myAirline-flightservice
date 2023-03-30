@@ -46,14 +46,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
         context.disableDefaultConstraintViolation();
 
         // set new default message
-        if (!isFlightValid(flight)) {
-            context.buildConstraintViolationWithTemplate("Flight invalid.")
-                   .addConstraintViolation();
-            
-            return false;
-        }
-
-        return true;
+        return isFlightValid(flight, context);
     }
     
 
@@ -64,7 +57,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * @param flight to check.
      * @return true if all validations are true.
      */
-    private boolean isFlightValid(Flight flight) {
+    private boolean isFlightValid(Flight flight, ConstraintValidatorContext context) {
 
         return 
             // airline should exist
@@ -75,10 +68,13 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
             airportService.exists(flight.getArrivalAirportName()) &&
 
             // dates should be in order
-            areDatesInOrder(flight) &&
+            areDatesInOrder(flight, context) &&
 
             // time should be in order
-            isTimeInOrder(flight);
+            isTimeInOrder(flight, context) &&
+
+            // number of seats should fit
+            isTotalSeatsValid(flight, context);
     }
 
 
@@ -88,12 +84,17 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * @param flight to check the dates of.
      * @return true if dates are in order.
      */
-    private boolean areDatesInOrder(Flight flight) {
+    private boolean areDatesInOrder(Flight flight, ConstraintValidatorContext context) {
 
         LocalDate departureDate = flight.getDepartureDate();
         LocalDate arrivalDate = flight.getArrivalDate();
 
-        return departureDate.equals(arrivalDate) || departureDate.isBefore(arrivalDate);
+        boolean areDatesInOrder = departureDate.equals(arrivalDate) || departureDate.isBefore(arrivalDate);
+
+        if (!areDatesInOrder) 
+            context.buildConstraintViolationWithTemplate("Flight invalid: Dates out of order.").addConstraintViolation();
+        
+        return areDatesInOrder;
     }
 
 
@@ -104,11 +105,36 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * @param flight to check the time of.
      * @return true if time is in order.
      */
-    private boolean isTimeInOrder(Flight flight) {
+    private boolean isTimeInOrder(Flight flight, ConstraintValidatorContext context) {
 
-        if (flight.getDepartureDate().equals(flight.getArrivalDate()))
-            return flight.getDepartureTime().isBefore(flight.getArrivalTime());
+        boolean isTimeInOrder = flight.getDepartureTime().isBefore(flight.getArrivalTime());
 
+        // check only if dates are the same
+        if (flight.getDepartureDate().equals(flight.getArrivalDate())) {
+            context.buildConstraintViolationWithTemplate("Flight invalid: Time out of order.").addConstraintViolation();
+
+            return isTimeInOrder;
+        }
+        
         return true;
+    }
+
+
+    /**
+     * Number of seats should add up to total seats.
+     * 
+     * @param flight
+     * @return true if total seats equals the sum of all other seat categories.
+     */
+    private boolean isTotalSeatsValid(Flight flight, ConstraintValidatorContext context) {
+
+        boolean isTotalSeatsValid = flight.getNumNormalSeats() + 
+                                    flight.getNumCorridorSeats() + 
+                                    flight.getNumWindowSeats() + 
+                                    flight.getNumFootRoomSeats() == flight.getSeatsTotal();
+        if (!isTotalSeatsValid)                            
+            context.buildConstraintViolationWithTemplate("Flight invalid: Wrong number of total seats.").addConstraintViolation();
+
+        return isTotalSeatsValid;
     }
 }
