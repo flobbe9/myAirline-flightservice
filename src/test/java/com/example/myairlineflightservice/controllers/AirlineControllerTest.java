@@ -9,13 +9,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.myAirlineFlightservice.models.Airline;
 import com.example.myAirlineFlightservice.services.AirlineService;
+import com.example.myAirlineFlightservice.utils.HttpRequestSender;
+
 import jakarta.servlet.ServletException;
 
 
@@ -33,9 +34,6 @@ public class AirlineControllerTest {
     @Autowired
     MockMvc mockMvc;
 
-    @Value("${baseUrl}")
-    String baseUrl;
-
     Airline airline;
 
 
@@ -49,7 +47,7 @@ public class AirlineControllerTest {
     @Test
     void getById_shouldThrowInvalidId() throws Exception {
 
-        assertThrows(ServletException.class, () -> mockMvc.perform(get(baseUrl + "/airline/getById/-1")));
+        assertThrows(ServletException.class, () -> mockMvc.perform(get(HttpRequestSender.BASE_URL + "/airline/getById/-1")));
     }
 
 
@@ -58,7 +56,7 @@ public class AirlineControllerTest {
         
         when(airlineService.getById(1l)).thenReturn(airline);
 
-        mockMvc.perform(get(baseUrl + "/airline/getById/1"))
+        mockMvc.perform(get(HttpRequestSender.BASE_URL + "/airline/getById/1"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType("application/json"));
@@ -68,14 +66,14 @@ public class AirlineControllerTest {
     @Test
     void delete_shouldThrowInvalidName() throws Exception {
 
-        assertThrows(ServletException.class, () -> mockMvc.perform(delete(baseUrl + "/airline/delete?name=")));
+        assertThrows(ServletException.class, () -> mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airline/delete?name=")));
     }
 
 
     @Test
     void delete_shouldBeValidName() throws Exception {
         
-        mockMvc.perform(delete(baseUrl + "/airline/delete?name=Munich airline"))
+        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airline/delete?name=Munich airline"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,6 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.models.FlightClass;
 import com.example.myAirlineFlightservice.services.FlightService;
+import com.example.myAirlineFlightservice.utils.HttpRequestSender;
+
 import jakarta.servlet.ServletException;
 
 
@@ -39,9 +40,6 @@ public class FlightControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
-    @Value("${baseUrl}")
-    String baseUrl;
 
     Flight flight;
 
@@ -70,7 +68,7 @@ public class FlightControllerTest {
     @Test
     void getById_shouldThrowInvalidId() throws Exception {
 
-        assertThrows(ServletException.class, () -> mockMvc.perform(get(baseUrl + "/flight/getById/-1")));
+        assertThrows(ServletException.class, () -> mockMvc.perform(get(HttpRequestSender.BASE_URL + "/flight/getById/-1")));
     }
 
 
@@ -79,7 +77,7 @@ public class FlightControllerTest {
         
         when(flightService.getById(1l)).thenReturn(flight);
 
-        mockMvc.perform(get(baseUrl + "/flight/getById/1"))
+        mockMvc.perform(get(HttpRequestSender.BASE_URL + "/flight/getById/1"))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentType("application/json"));
@@ -89,14 +87,14 @@ public class FlightControllerTest {
     @Test
     void delete_shouldThrowInvalidNumber() throws Exception {
 
-        assertThrows(ServletException.class, () -> mockMvc.perform(delete(baseUrl + "/flight/delete?number=-1")));
+        assertThrows(ServletException.class, () -> mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/flight/delete?number=-1")));
     }
 
 
     @Test
     void delete_shouldBeValidNumber() throws Exception {
         
-        mockMvc.perform(delete(baseUrl + "/flight/delete?number=1"))
+        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/flight/delete?number=1"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

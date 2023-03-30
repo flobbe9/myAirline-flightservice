@@ -16,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
  * @since 0.0.1
  */
 public class HttpRequestSender {
+
+    public static String BASE_URL = "http://localhost:4001";
     
     /**
      * Sends a simple http request accepting application/json as content-type. 
