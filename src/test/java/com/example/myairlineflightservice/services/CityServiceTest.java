@@ -54,7 +54,7 @@ public class CityServiceTest {
         this.berlin.setId(6l);
         this.berlinName = berlin.getName();
 
-        this.mockCity = new City("Mock city", "Mock country");
+        this.mockCity = new City("Mock city", "Some country");
         this.mockCity.setId(7l);
         this.mockCityName = mockCity.getName();
     }
@@ -62,7 +62,7 @@ public class CityServiceTest {
 
     @Test
     @Order(0)
-    void save_shouldNotFindCity() {
+    void save_shouldNotFindCountry() {
         
         assertThrows(IllegalStateException.class, () -> cityService.save(mockCity));
     }
