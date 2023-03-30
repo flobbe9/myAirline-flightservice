@@ -22,7 +22,7 @@ import com.example.myAirlineFlightservice.repositories.CountryRepository;
 /**
  * Test class for {@link CityService}. 
  * <p>
- * Depends on the mock data from resources/data.sql.
+ * Depends on the mock data from resources/data.sql. Uses Berlin as test subject
  * 
  * @since 0.0.1
  */
@@ -40,8 +40,8 @@ public class CityServiceTest {
     @Autowired
     CountryRepository countryRepository;
 
-    City munich;
-    String munichName;
+    City berlin;
+    String berlinName;
 
     City mockCity;
     String mockCityName;
@@ -50,9 +50,9 @@ public class CityServiceTest {
     @BeforeEach
     void setUp() {
 
-        this.munich = new City("Munich", "Germany");
-        this.munich.setId(6l);
-        this.munichName = munich.getName();
+        this.berlin = new City("Berlin", "Germany");
+        this.berlin.setId(6l);
+        this.berlinName = berlin.getName();
 
         this.mockCity = new City("Mock city", "Mock country");
         this.mockCity.setId(7l);
@@ -83,7 +83,7 @@ public class CityServiceTest {
     @Order(2)
     void delete_shouldFindRelatedEntities() {
 
-        assertThrows(IllegalStateException.class, () -> cityService.delete(munichName));
+        assertThrows(IllegalStateException.class, () -> cityService.delete(berlinName));
     }
             
     
@@ -91,7 +91,7 @@ public class CityServiceTest {
     @Order(3)
     void deleteAllByCityName_shouldFindRelatedEntites() {
         
-        assertThrows(IllegalStateException.class, () -> cityService.deleteAllByCountryName(munich.getCountryName()));
+        assertThrows(IllegalStateException.class, () -> cityService.deleteAllByCountryName(berlin.getCountryName()));
     }
 
     
@@ -124,7 +124,7 @@ public class CityServiceTest {
     @Test
     void save_shouldFindDuplicateCity() {
         
-        assertThrows(IllegalStateException.class, () -> cityService.save(munich));
+        assertThrows(IllegalStateException.class, () -> cityService.save(berlin));
     }
     
     

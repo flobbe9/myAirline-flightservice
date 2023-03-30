@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.net.ConnectException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ import com.example.myAirlineFlightservice.repositories.FlightRepository;
 /**
  * Test class for {@link AirportService}. 
  * <p>
- * Depends on the mock data from resources/data.sql.
+ * Depends on the mock data from resources/data.sql. Uses Munich as test subject
  * 
  * @since 0.0.1
  */
@@ -115,7 +113,7 @@ public class AirportServiceTest {
             airportService.update(mockAirport);
 
         } catch (ResourceAccessException e) {
-            mockAirport.setCityName("Berlin");
+            mockAirport.setCityName("Hannover");
             airportService.save(mockAirport);
         }
 
