@@ -6,11 +6,12 @@ import com.example.myAirlineFlightservice.models.AbstractEntity;
 import jakarta.transaction.Transactional;
 
 
+/**
+ * Parent interface for all repositories with an {@link AbstractEntity}.
+ * 
+ * @since 0.0.1
+ */
 public interface AbstractRepository<E extends AbstractEntity> {
-
-    // Object save(Object entity);
-
-    // Optional<E> findById(long id);
 
     Optional<E> findByName(String name);
 

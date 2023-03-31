@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.example.myAirlineFlightservice.models.Airline;
 
 
+/**
+ * Repository interface for {@link Airline}. Extends {@link AbstractRepository}.
+ */
 @Repository
 public interface AirlineRepository extends AbstractRepository<Airline>, JpaRepository<Airline, Long> {
     

@@ -38,9 +38,6 @@ public class FlightServiceTest {
     @Autowired
     FlightService flightService;
 
-    // Flight flight;
-    // long flightNumber;
-
     Flight mockFlight;
     long mockFlightNumber;
 

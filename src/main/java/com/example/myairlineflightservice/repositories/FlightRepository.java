@@ -13,6 +13,9 @@ import com.example.myAirlineFlightservice.models.Flight;
 import jakarta.transaction.Transactional;
 
 
+/**
+ * Repository interface for {@link Flight}.
+ */
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {
     

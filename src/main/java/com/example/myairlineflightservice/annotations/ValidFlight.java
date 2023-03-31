@@ -10,7 +10,7 @@ import jakarta.validation.Payload;
 
 
 /**
- * Default annotation to validate a {@link Flight}.
+ * Annotation to validate a {@link Flight}.
  * 
  * @since 0.0.1
  */

@@ -14,7 +14,7 @@ import lombok.Setter;
 
 
 /**
- * Class representing an airport.
+ * Class defining an airport.
  * 
  * @since 0.0.1
  */
@@ -39,6 +39,7 @@ public class Airport extends AbstractEntity {
 
 	
 	public Airport(String name, String cityName) {
+    
 		super(name, "airport");
 		this.cityName = cityName;
 	}

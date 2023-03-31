@@ -9,6 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.myAirlineFlightservice.models.Airport;
 
 
+/**
+ * Repository interface for {@link Airport}. Extends {@link AbstractRepository}.
+ */
 @Repository
 public interface AirportRepository extends AbstractRepository<Airport>, JpaRepository<Airport, Long> {
 

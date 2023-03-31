@@ -26,6 +26,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
+/**
+ * Class handling endpoints related to the {@link Airport} entity.
+ * 
+ * @since 0.0.1
+ */
 @RestController
 @RequestMapping("/airport")
 @Validated

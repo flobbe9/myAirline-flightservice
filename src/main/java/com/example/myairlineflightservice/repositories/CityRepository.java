@@ -10,6 +10,9 @@ import com.example.myAirlineFlightservice.models.City;
 import jakarta.transaction.Transactional;
 
 
+/**
+ * Repository interface for {@link City}. Extends {@link AbstractRepository}.
+ */
 @Repository
 public interface CityRepository extends AbstractRepository<City>, JpaRepository<City, Long> {
 

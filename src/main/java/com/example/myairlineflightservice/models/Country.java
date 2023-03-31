@@ -12,7 +12,7 @@ import lombok.Setter;
 
 
 /**
- * Class representing a country.
+ * Class defining a country.
  * 
  * @since 0.0.1
  */
@@ -33,6 +33,7 @@ public class Country extends AbstractEntity {
 
 
 	public Country(String name) {
+    
 		super(name, "country");
 	}
 

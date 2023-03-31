@@ -12,7 +12,7 @@ import lombok.Setter;
 
 
 /**
- * Class representing an airline.
+ * Class defining an airline.
  * 
  * @since 0.0.1
  */

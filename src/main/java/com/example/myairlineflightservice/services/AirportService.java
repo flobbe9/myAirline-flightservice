@@ -16,6 +16,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
+/**
+ * Service class handling any logic related to {@link Airport}.
+ * <p>
+ * Extends {@link AbstractService}.
+ * 
+ * @since 0.0.1
+ */
 @Service
 @Validated
 public class AirportService extends AbstractService<Airport> {
@@ -36,6 +43,13 @@ public class AirportService extends AbstractService<Airport> {
     }
 
     
+    /**
+     * Find airport by id.
+     * 
+     * @param id of the airport
+     * @return the airport with the given id
+     * @throws IllegalStateException if not found.
+     */
     public Airport getById(@Min(1) long id) {
 
         return airportRepository.findById(id).orElseThrow(() ->
@@ -43,6 +57,13 @@ public class AirportService extends AbstractService<Airport> {
     }
 
 
+    /**
+     * Save given airport in db.
+     * 
+     * @param airport to save in db
+     * @return saved airport
+     * @throws IllegalStateException if airport already exists or city does not exist.
+     */
     public Airport save(@Valid Airport airport) {
 
         String airportName = airport.getName();
@@ -78,6 +99,12 @@ public class AirportService extends AbstractService<Airport> {
     }
 
 
+    /**
+     * Delete airport by given name. 
+     * 
+     * @param name of the airport
+     * @throws IllegalStateException if airport not found or related flights are still in db.
+     */
     @Override
     public void delete(@NotBlank String name) {
 
@@ -92,6 +119,12 @@ public class AirportService extends AbstractService<Airport> {
     }
 
 
+    /**
+     * Delete all airports in given city. 
+     * 
+     * @param cityName name of the city.
+     * @throws IllegalStateException if city does not exist or airport has still related flights in db.
+     */
     public void deleteAllByCityName(@NotBlank String cityName) {
 
         // city should exist
@@ -107,6 +140,12 @@ public class AirportService extends AbstractService<Airport> {
     }
 
 
+    /**
+     * Iterates given list of airports and looks for related flights.
+     * 
+     * @param airports to check for related flights
+     * @return true if at least one airoprt has at least one related flight
+     */
     private boolean hasRelatedEntites(List<Airport> airports) {
 
         // find related flights

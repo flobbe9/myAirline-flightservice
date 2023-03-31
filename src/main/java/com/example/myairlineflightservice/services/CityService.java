@@ -15,10 +15,18 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
+/**
+ * Service class handling any logic related to {@link City}.
+ * <p>
+ * Extends {@link AbstractService}.
+ * 
+ * @since 0.0.1
+ */
 @Service
 @Validated
 public class CityService extends AbstractService<City> {
     
+    @Autowired
     private CityRepository cityRepository;
     
     @Autowired
@@ -30,10 +38,16 @@ public class CityService extends AbstractService<City> {
     
     public CityService(CityRepository repository) {
         super(repository, "city");
-        this.cityRepository = repository;
     }
 
 
+    /**
+     * Find city by id.
+     * 
+     * @param id of the city
+     * @return the city with the given id
+     * @throws IllegalStateException if not found.
+     */
     public City getById(@Min(1) long id) {
 
         return cityRepository.findById(id).orElseThrow(() ->
@@ -41,6 +55,13 @@ public class CityService extends AbstractService<City> {
     }
 
 
+    /**
+     * Save given city in db.
+     * 
+     * @param city to save in db
+     * @return saved city
+     * @throws IllegalStateException if city already exists or country does not exist.
+     */
     public City save(@Valid City city) {
 
         String cityName = city.getName();
@@ -54,8 +75,14 @@ public class CityService extends AbstractService<City> {
 
         return cityRepository.save(city);
     }
+ 
 
-
+    /**
+     * Delete city by given name. 
+     * 
+     * @param name of the city
+     * @throws IllegalStateException if city not found or related airports are still in db.
+     */
     @Override
     public void delete(@NotBlank String name) {
 
@@ -70,6 +97,12 @@ public class CityService extends AbstractService<City> {
     }
 
 
+    /**
+     * Delete all cities in given country. 
+     * 
+     * @param countryName name of the country.
+     * @throws IllegalStateException if country does not exist or city has still related airports in db.
+     */
     public void deleteAllByCountryName(@NotBlank String countryName) {
 
         // country should exist
@@ -85,6 +118,12 @@ public class CityService extends AbstractService<City> {
     }
 
 
+    /**
+     * Iterates given list of cites and looks for related airports (meaning an airport located in that city).
+     * 
+     * @param cities to check for related airports
+     * @return true if at least one city has at least one related airport
+     */
     private boolean hasRelatedEntites(List<City> cities) {
 
         // find related airports

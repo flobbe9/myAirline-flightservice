@@ -26,6 +26,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
+/**
+ * Class handling endpoints related to the {@link Country} entity.
+ * 
+ * @since 0.0.1
+ */
 @RestController
 @RequestMapping("/country")
 @Validated

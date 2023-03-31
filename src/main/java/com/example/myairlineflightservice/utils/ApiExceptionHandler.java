@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ApiExceptionHandler {
     
+    /**
+     * Handler method for any {@link ApiRequestException}.
+     * 
+     * @param e the apiReqeustException
+     * @return a ResponseEntity with the exceptionWrapper and the status code
+     */
     @ExceptionHandler({ApiException.class})
     public ResponseEntity<Object> handleApiRequestException(ApiException e) {
 

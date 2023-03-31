@@ -31,7 +31,7 @@ import lombok.Setter;
 
 
 /**
- * Class representing a flight.
+ * Class defining a flight.
  * 
  * @since 0.0.1
  */

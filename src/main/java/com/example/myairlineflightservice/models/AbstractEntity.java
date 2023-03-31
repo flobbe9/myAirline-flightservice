@@ -15,6 +15,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+/**
+ * Super class for all entities with a 'name' field.
+ * 
+ * @since 0.0.1
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Airline.class, name = "airline"),

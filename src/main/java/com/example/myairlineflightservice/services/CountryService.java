@@ -13,6 +13,13 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 
+/**
+ * Service class handling any logic related to {@link Country}.
+ * <p>
+ * Extends {@link AbstractService}.
+ * 
+ * @since 0.0.1
+ */
 @Service
 @Validated
 public class CountryService extends AbstractService<Country> {
@@ -29,6 +36,13 @@ public class CountryService extends AbstractService<Country> {
     }
 
 
+    /**
+     * Find country by id.
+     * 
+     * @param id of the country
+     * @return the country with the given id
+     * @throws IllegalStateException if not found.
+     */
     public Country getById(@Min(1) long id) {
 
         return countryRepository.findById(id).orElseThrow(() ->
@@ -36,18 +50,31 @@ public class CountryService extends AbstractService<Country> {
     }
 
 
+    /**
+     * Save given country in db.
+     * 
+     * @param country to save in db
+     * @return saved country
+     * @throws IllegalStateException if already exists.
+     */
     public Country save(@Valid Country country) {
 
-        String airportName = country.getName();
+        String countryName = country.getName();
 
         // country should not exist
-        if (exists(airportName))
-            throw new IllegalStateException("Failed to save aiport: " + airportName + ". Country already exists.");
+        if (exists(countryName))
+            throw new IllegalStateException("Failed to save aiport: " + countryName + ". Country already exists.");
 
         return countryRepository.save(country);
     }
 
 
+    /**
+     * Delete country by given name. 
+     * 
+     * @param name of the country
+     * @throws IllegalStateException if country not found or related cities are still in db
+     */
     @Override
     public void delete(@NotBlank String name) {
 

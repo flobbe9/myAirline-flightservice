@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.example.myAirlineFlightservice.models.Country;
 
 
+/**
+ * Repository interface for {@link Country}. Extends {@link AbstractRepository}.
+ */
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Long>, AbstractRepository<Country> {
     
