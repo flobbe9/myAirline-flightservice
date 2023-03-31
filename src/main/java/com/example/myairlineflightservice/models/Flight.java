@@ -19,6 +19,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -89,7 +90,7 @@ public class Flight {
     private Set<FlightClass> flightClasses;
 
     @NotNull(message = "Base price cannot be null.", groups = {ValidFlight.class})
-    @Min(value = 0, message = "Base price cannot be negative.", groups = {ValidFlight.class})
+    @DecimalMin(value = "0.0", message = "Base price cannot be negative.", groups = {ValidFlight.class})
     private double basePrice;
 
     @NotNull(message = "Number of normal seats cannot be null.", groups = {ValidFlight.class})
@@ -111,6 +112,68 @@ public class Flight {
     @NotNull(message = "Number of seats available cannot be null.", groups = {ValidFlight.class})
     @Min(value = 0, message = "Number of seats available cannot be negative.", groups = {ValidFlight.class})
     private int numAvailableSeats;
+
+
+    /**
+     * Decrease the number of seats of given type by 1 as well as the total number of seats available.
+     * 
+     * @param seatType type of the seat
+     */
+    public void reduceNumSeats(@NotNull(message = "Seat type cannot be null.") SeatType seatType) {
+
+        // reduce seat type
+        if (seatType.equals(SeatType.NORMAL)) {
+            setNumNormalSeats(this.numNormalSeats - 1);
+
+        } else if (seatType.equals(SeatType.CORRIDOR)) {
+            setNumCorridorSeats(this.numCorridorSeats - 1);
+        
+        } else if (seatType.equals(SeatType.WINDOW)) {
+            setNumWindowSeats(this.numWindowSeats - 1);
+
+        } else if (seatType.equals(SeatType.FOOT_ROOM)) 
+            setNumFootRoomSeats(this.numFootRoomSeats - 1);
+
+        // reduce total
+        setNumAvailableSeats(this.numAvailableSeats - 1);
+    }
+
+
+    /**
+     * Checks if a seat of given type is stil available.
+     * 
+     * @param seatType type of the seat
+     * @return true if number of seats of given type is greater than 0
+     * @throws IllegalStateException if seat type is not known
+     */
+    public boolean isSeatAvailable(@NotNull(message = "Seat type cannot be null.") SeatType seatType) {
+
+        // check seat type
+        if (seatType.equals(SeatType.NORMAL)) {
+            return this.numNormalSeats > 0;
+
+        } else if (seatType.equals(SeatType.CORRIDOR)) {
+            return this.numCorridorSeats > 0;
+        
+        } else if (seatType.equals(SeatType.WINDOW)) {
+            return this.numWindowSeats > 0;
+
+        } else if (seatType.equals(SeatType.FOOT_ROOM)) 
+            return this.numFootRoomSeats > 0;
+
+        throw new IllegalStateException("Unknown seat type: " + seatType + ".");
+    }
+
+
+    /**
+     * Checks if any seat is available on this flight.
+     * 
+     * @return true if number of available seats is less than 1.
+     */
+    public boolean isBookedOut() {
+        
+        return this.numAvailableSeats < 1;
+    }
 
 
     @Override

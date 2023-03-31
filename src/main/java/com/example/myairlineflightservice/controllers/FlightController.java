@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.myAirlineFlightservice.annotations.ValidFlight;
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.models.FlightClass;
+import com.example.myAirlineFlightservice.models.FlightDetails;
 import com.example.myAirlineFlightservice.services.FlightService;
 import com.example.myAirlineFlightservice.utils.ApiException;
 
@@ -29,6 +30,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -124,14 +127,14 @@ public class FlightController {
         @ApiResponse(responseCode = "200", description = "Found a flight list (might be empty).", content = {@Content(mediaType = "application/json")}),
         @ApiResponse(responseCode = "400", description = "Invalid base price.", content = {@Content(mediaType = "application/json")}),
     })
-    public List<Flight> getAllByBasePriceLessThanEqual(@Min(value = 0, message = "Base price cannot be negative.")
+    public List<Flight> getAllByBasePriceLessThanEqual(@DecimalMin(value = "0.0", message = "Base price cannot be negative.")
                                                        @RequestParam double basePrice) {
 
         return flightService.getAllByBasePriceLessThanEqual(basePrice);
     }
 
 
-    @GetMapping("/getAllBySeatsAvailable")
+    @GetMapping("/getAllByAvailableSeats")
     @Operation(summary = "Get all flights by number of seats available greater than or equal.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Found a flight list (might be empty).", content = {@Content(mediaType = "application/json")}),
@@ -140,7 +143,7 @@ public class FlightController {
     public List<Flight> getAllByNumAvailableSeats(@Min(value = 0, message = "Number of seats available cannot be negative.")
                                                   @RequestParam int numAvailableSeats) {
 
-        return flightService.getAllByBasePriceLessThanEqual(numAvailableSeats);
+        return flightService.getAllByNumAvailableSeatsGreaterThanEqual(numAvailableSeats);
     }
 
 
@@ -254,5 +257,18 @@ public class FlightController {
     public void deleteAllByAirport(@NotBlank(message = "Airport name cannot be blank.") @RequestParam String airportName) {
         
         flightService.deleteAllByAirportName(airportName);
+    }
+
+
+    @PostMapping("/book")
+    @Operation(summary = "Book flight with given id.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Flight booked.", content = {@Content(mediaType = "application/json")}),
+        @ApiResponse(responseCode = "400", description = "Invalid flight details.", content = {@Content(mediaType = "application/json")}),
+        @ApiResponse(responseCode = "500", description = "Flight does not exist, seat not avaiable or flight is booked out.", content = {@Content(mediaType = "application/json")}),
+    })
+    public FlightDetails book(@Valid @RequestBody FlightDetails flightDetails) {
+
+        return flightService.book(flightDetails);
     }
 }

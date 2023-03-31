@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.models.FlightClass;
+import com.example.myAirlineFlightservice.models.FlightDetails;
+import com.example.myAirlineFlightservice.models.SeatType;
 import com.example.myAirlineFlightservice.repositories.FlightRepository;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -127,7 +129,7 @@ public class FlightService {
      * @param numAvailableSeats minimum available seats of flight
      * @return list of flights with equal or more seats available
      */
-    public List<Flight> getAllBynumAvailableSeatsGreaterThanEqual(@Min(0) int numAvailableSeats) {
+    public List<Flight> getAllByNumAvailableSeatsGreaterThanEqual(@Min(0) int numAvailableSeats) {
 
         return flightRepository.findAllByNumAvailableSeatsGreaterThanEqual(numAvailableSeats);
     }
@@ -270,6 +272,45 @@ public class FlightService {
     public void deleteAllByAirportName(@NotBlank String airportName) {
 
         flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(airportName, airportName);
+    }
+
+
+    public FlightDetails book(FlightDetails flightDetails) {
+
+        SeatType seatType = flightDetails.getSeatType();
+        long number = flightDetails.getNumber();
+        double seatFee = seatType.getSeatFee();
+        double luggageFee = flightDetails.getLuggageFee();
+        FlightClass flightClass = flightDetails.getFlightClass();
+
+        // should exist
+        Flight flight = getByNumber(number);
+        
+        double priceTotal = flight.getBasePrice();
+
+        // is flight booked out
+        if (flight.isBookedOut())
+            throw new IllegalStateException("Failed to book flight: " + number + ". Flight is booked out.");
+
+        // is seat available
+        if (!flight.isSeatAvailable(seatType))
+            throw new IllegalStateException("Failed to book flight. Seat type of " + seatType.name() + " is not available anymore. Please choose a different seat type.");
+        
+        // reduce num seats
+        flight.reduceNumSeats(seatType);
+
+        // add seatFee, luggageFee and flightClassFee to basePrice
+        priceTotal = flight.getBasePrice() + seatFee + luggageFee + flightClass.getFee();
+
+        // update flight
+        update(flight);
+
+        // retun FlightDetails
+        return new FlightDetails(number, 
+                                 seatType, 
+                                 luggageFee, 
+                                 flightClass,
+                                 priceTotal);
     }
 
 
