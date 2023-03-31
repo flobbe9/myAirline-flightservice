@@ -33,11 +33,11 @@ public class AirlineService extends AbstractService<Airline> {
 
     public Airline save(@Valid Airline airline) {
 
-        String airportName = airline.getName();
+        String airlineName = airline.getName();
 
         // airport should not exist
-        if (exists(airportName))
-            throw new IllegalStateException("Failed to save aiport: " + airportName + ". Airline already exists.");
+        if (exists(airlineName))
+            throw new IllegalStateException("Failed to save aiport: " + airlineName + ". Airline already exists.");
 
         return airlineRepository.save(airline);
     }
