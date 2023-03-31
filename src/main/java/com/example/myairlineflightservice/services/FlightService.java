@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.models.FlightClass;
 import com.example.myAirlineFlightservice.repositories.FlightRepository;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -120,6 +119,9 @@ public class FlightService {
 
         // find old flights
         List<Flight> relatedFlights = flightRepository.findAllByDepartureAirportNameOrArrivalAirportName(oldAirportName, oldAirportName);
+
+        // old airport should exist
+        airportService.getByName(oldAirportName);
 
         // set new airport names
         relatedFlights.forEach(flight -> {

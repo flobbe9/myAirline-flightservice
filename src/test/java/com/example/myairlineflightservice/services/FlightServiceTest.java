@@ -38,8 +38,8 @@ public class FlightServiceTest {
     @Autowired
     FlightService flightService;
 
-    Flight flight;
-    long flightNumber;
+    // Flight flight;
+    // long flightNumber;
 
     Flight mockFlight;
     long mockFlightNumber;
@@ -47,23 +47,6 @@ public class FlightServiceTest {
 
     @BeforeEach
     void setUp() {
-
-        this.flight = new Flight(6l, 
-                                 5l, 
-                                 "Lufthansa", 
-                                 "Munich airport", 
-                                 "Hamburg airport", 
-                                 LocalTime.of(10, 0), 
-                                 LocalTime.of(13, 0), 
-                                 LocalDate.of(2023, 4, 1), 
-                                 LocalDate.of(2023, 4, 1), 
-                                 new HashSet<>(Set.of(FlightClass.ECONOMY)), 
-                                 30.0, 
-                                 40, 
-                                 10, 10, 
-                                 10, 
-                                 70);
-        this.flightNumber = this.flight.getNumber();
 
         this.mockFlight = new Flight(5l, 
                                     6l, 
@@ -106,7 +89,14 @@ public class FlightServiceTest {
 
         assertThrows(IllegalStateException.class, () -> flightService.update(mockFlight));
     }
-    
+
+
+    @Test
+    @Order(0)
+    void updateAllByAirportName_shouldNotFindAirport() {
+
+        assertThrows(IllegalStateException.class, () -> flightService.updateAllByAirportName("oldAirport", "newAirport"));
+    }
 
     @Test
     @Order(0)
@@ -146,12 +136,12 @@ public class FlightServiceTest {
     @Order(2)
     void update_shouldUpdateMockFilght() {
 
-        String newMockAirport = "New mock airport";
-        mockFlight.setDepartureAirportName(newMockAirport);
+        String newMockAirportName = "New mock airport";
+        mockFlight.setDepartureAirportName(newMockAirportName);
         
         flightService.update(mockFlight);
 
-        assertTrue(flightService.existsByAirport(newMockAirport));
+        assertTrue(flightService.existsByAirport(newMockAirportName));
     }
 
 
@@ -159,10 +149,12 @@ public class FlightServiceTest {
     @Order(3)
     void updateAllByAirportName_shouldUpdate() {
 
-        String newMockAirport = "New mock airport";
+        String oldAirport = "Frankfurt airport";
         String newerAirportName = "Even newer airport";
-        assertTrue(flightService.existsByAirport(newMockAirport));
-        flightService.updateAllByAirportName(newMockAirport, newerAirportName);
+
+        assertTrue(flightService.existsByAirport(oldAirport));
+        
+        flightService.updateAllByAirportName(oldAirport, newerAirportName);
 
         assertTrue(flightService.existsByAirport(newerAirportName));
     }
