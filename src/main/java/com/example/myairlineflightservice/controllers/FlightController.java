@@ -154,7 +154,7 @@ public class FlightController {
 
     @PostMapping("/save")
     @ResponseStatus(code = HttpStatus.OK, reason = "Flight saved.")
-    @Operation(summary = "Save given flight to db.")
+    @Operation(summary = "Save given flight in db.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Flight saved.", content = {@Content(mediaType = "application/json")}),
         @ApiResponse(responseCode = "400", description = "Invalid flight.", content = {@Content(mediaType = "application/json")}),
