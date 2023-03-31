@@ -39,7 +39,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findAllByBasePriceLessThanEqual(double basePrice);
 
-    List<Flight> findAllBySeatsTotalGreaterThanEqual(int seatsTotal);
+    List<Flight> findAllByNumAvailableSeatsGreaterThanEqual(int numSeatsAvailable);
 
     @Transactional
     void deleteByNumber(long number);

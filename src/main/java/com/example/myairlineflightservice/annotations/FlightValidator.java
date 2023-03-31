@@ -55,6 +55,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * not covered by jakarta.
      * 
      * @param flight to check.
+     * @param context to set the error message
      * @return true if all validations are true.
      */
     private boolean isFlightValid(Flight flight, ConstraintValidatorContext context) {
@@ -74,7 +75,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
             isTimeInOrder(flight, context) &&
 
             // number of seats should fit
-            isTotalSeatsValid(flight, context);
+            isNumAvailableSeatsValid(flight, context);
     }
 
 
@@ -82,6 +83,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * Departure date should be the same or after arrival date.
      * 
      * @param flight to check the dates of.
+     * @param context to set the error message
      * @return true if dates are in order.
      */
     private boolean areDatesInOrder(Flight flight, ConstraintValidatorContext context) {
@@ -103,6 +105,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      * In that case the departure time should be before the arrival time.
      * 
      * @param flight to check the time of.
+     * @param context to set the error message
      * @return true if time is in order.
      */
     private boolean isTimeInOrder(Flight flight, ConstraintValidatorContext context) {
@@ -121,20 +124,21 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
 
 
     /**
-     * Number of seats should add up to total seats.
+     * Number of seats should add up to number of available seats.
      * 
-     * @param flight
-     * @return true if total seats equals the sum of all other seat categories.
+     * @param flight to check
+     * @param context to set the error message
+     * @return true if number of available seats equals the sum of all other seat categories.
      */
-    private boolean isTotalSeatsValid(Flight flight, ConstraintValidatorContext context) {
+    private boolean isNumAvailableSeatsValid(Flight flight, ConstraintValidatorContext context) {
 
-        boolean isTotalSeatsValid = flight.getNumNormalSeats() + 
-                                    flight.getNumCorridorSeats() + 
-                                    flight.getNumWindowSeats() + 
-                                    flight.getNumFootRoomSeats() == flight.getSeatsTotal();
-        if (!isTotalSeatsValid)                            
-            context.buildConstraintViolationWithTemplate("Flight invalid: Wrong number of total seats.").addConstraintViolation();
+        boolean isNumAvailableSeatsValid = flight.getNumNormalSeats() + 
+                                            flight.getNumCorridorSeats() + 
+                                            flight.getNumWindowSeats() + 
+                                            flight.getNumFootRoomSeats() == flight.getNumAvailableSeats();
+        if (!isNumAvailableSeatsValid)                            
+            context.buildConstraintViolationWithTemplate("Flight invalid: Falsy number of available seats.").addConstraintViolation();
 
-        return isTotalSeatsValid;
+        return isNumAvailableSeatsValid;
     }
 }

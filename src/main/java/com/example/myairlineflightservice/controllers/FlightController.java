@@ -131,16 +131,16 @@ public class FlightController {
     }
 
 
-    @GetMapping("/getAllBySeatsTotal")
-    @Operation(summary = "Get all flights by total seats greater than or equal.")
+    @GetMapping("/getAllBySeatsAvailable")
+    @Operation(summary = "Get all flights by number of seats available greater than or equal.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Found a flight list (might be empty).", content = {@Content(mediaType = "application/json")}),
         @ApiResponse(responseCode = "400", description = "Invalid seat number.", content = {@Content(mediaType = "application/json")}),
     })
-    public List<Flight> getAllBySeatsTotalGreaterThanEqual(@Min(value = 0, message = "Seats total cannot be negative.")
-                                                           @RequestParam int seatsTotal) {
+    public List<Flight> getAllByNumAvailableSeats(@Min(value = 0, message = "Number of seats available cannot be negative.")
+                                                  @RequestParam int numAvailableSeats) {
 
-        return flightService.getAllByBasePriceLessThanEqual(seatsTotal);
+        return flightService.getAllByBasePriceLessThanEqual(numAvailableSeats);
     }
 
 

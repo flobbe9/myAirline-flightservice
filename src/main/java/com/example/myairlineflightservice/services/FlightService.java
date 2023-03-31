@@ -121,16 +121,15 @@ public class FlightService {
     }
 
 
-    // TODO: maybe add field 'booked seats', then change this comment
     /**
-     * Find all flights with at least as many seats in total as given seat number.
+     * Find all flights with at least as many seats available as given seat number.
      * 
-     * @param seatsTotal minimum seat number of flight
-     * @return list of flights with equal or more seats
+     * @param numAvailableSeats minimum available seats of flight
+     * @return list of flights with equal or more seats available
      */
-    public List<Flight> getAllBySeatsTotalGreaterThanEqual(@Min(0) int seatsTotal) {
+    public List<Flight> getAllBynumAvailableSeatsGreaterThanEqual(@Min(0) int numAvailableSeats) {
 
-        return flightRepository.findAllBySeatsTotalGreaterThanEqual(seatsTotal);
+        return flightRepository.findAllByNumAvailableSeatsGreaterThanEqual(numAvailableSeats);
     }
 
 

@@ -108,9 +108,9 @@ public class Flight {
     @Min(value = 0, message = "Number of foot room seats cannot be negative.", groups = {ValidFlight.class})
     private int numFootRoomSeats;
 
-    @NotNull(message = "Number of total seats cannot be null.", groups = {ValidFlight.class})
-    @Min(value = 0, message = "Number of total seats cannot be negative.", groups = {ValidFlight.class})
-    private int seatsTotal;
+    @NotNull(message = "Number of seats available cannot be null.", groups = {ValidFlight.class})
+    @Min(value = 0, message = "Number of seats available cannot be negative.", groups = {ValidFlight.class})
+    private int numAvailableSeats;
 
 
     @Override
