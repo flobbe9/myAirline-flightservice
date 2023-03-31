@@ -1,7 +1,8 @@
-### Gradle ###
 HELP.md
 README.md
 .gitignore
+
+### Gradle ###
 .gradle
 .github
 gradlew
@@ -14,6 +15,8 @@ gradle/
 
 ### Docker ###
 Dockerfile
+docker-compose-db.yml
+docker-compose.yml
 
 ### STS ###
 .apt_generated
@@ -44,4 +47,4 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
+.vscode
