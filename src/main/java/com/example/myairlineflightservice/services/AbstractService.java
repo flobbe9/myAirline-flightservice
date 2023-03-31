@@ -34,6 +34,9 @@ public abstract class AbstractService<E extends AbstractEntity> {
 
 
     public void delete(@NotBlank String name) {
+
+        // should exist
+        getByName(name);
       
         repository.deleteByName(name);
     }
