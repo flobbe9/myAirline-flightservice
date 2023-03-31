@@ -1,6 +1,6 @@
 package com.example.myAirlineFlightservice.models;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,7 +20,7 @@ public enum FlightClass {
     private Double fee;
 
 
-    public void setFee(@Min(value = 0, message = "Fee cannot be negative.") double fee) {
+    public void setFee(@DecimalMin(value = "0.0", message = "Fee cannot be negative.") double fee) {
 
         this.fee = fee;
     }
