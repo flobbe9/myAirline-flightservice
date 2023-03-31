@@ -1,6 +1,9 @@
 ### Gradle ###
 HELP.md
+README.md
+.gitignore
 .gradle
+.github
 gradlew
 gradlew.bat
 settings.gradle
