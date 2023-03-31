@@ -13,5 +13,5 @@ jobs:
         with: 
           distribution: 'temurin'
           java-version: '17'
-      - run: docker-compose up -d
+      - run: docker-compose up -f "docker-compose-db.yml" -d
       - run: gradle clean build
