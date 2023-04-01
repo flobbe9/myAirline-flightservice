@@ -57,7 +57,8 @@ public class FlightServiceTest {
                                     new HashSet<>(Set.of(FlightClass.ECONOMY)), 
                                     30.0, 
                                     40, 
-                                    10, 10, 
+                                    10, 
+                                    10, 
                                     10, 
                                     70);
         this.mockFlightNumber = this.mockFlight.getNumber();

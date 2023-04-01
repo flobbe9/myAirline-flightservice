@@ -118,6 +118,7 @@ public class Flight {
      * Decrease the number of seats of given type by 1 as well as the total number of seats available.
      * 
      * @param seatType type of the seat
+     * @throws IllegalStateException if seat type is not known
      */
     public void reduceNumSeats(@NotNull(message = "Seat type cannot be null.") SeatType seatType) {
 
@@ -131,8 +132,11 @@ public class Flight {
         } else if (seatType.equals(SeatType.WINDOW)) {
             setNumWindowSeats(this.numWindowSeats - 1);
 
-        } else if (seatType.equals(SeatType.FOOT_ROOM)) 
+        } else if (seatType.equals(SeatType.FOOT_ROOM)) {
             setNumFootRoomSeats(this.numFootRoomSeats - 1);
+
+        } else
+            throw new IllegalStateException("Unknown seat type: " + seatType + ".");
 
         // reduce total
         setNumAvailableSeats(this.numAvailableSeats - 1);
