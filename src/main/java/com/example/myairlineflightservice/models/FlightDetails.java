@@ -20,11 +20,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode
 public class FlightDetails {
     
     @Min(value = 0, message = "Number cannot be negative.")
-    @EqualsAndHashCode.Include
     private long number;
 
     @NotNull(message = "Seat type cannot be null.")
