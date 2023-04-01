@@ -275,7 +275,14 @@ public class FlightService {
     }
 
 
-    public FlightDetails book(FlightDetails flightDetails) {
+    /**
+     * Check fight details before booking, update given flight object's seat numbers and calculate total price.
+     * 
+     * @param flightDetails recieved from user with neccessary booking information
+     * @return flight details containing the total price
+     * @throws IllegalStateException if booking not possible
+     */
+    public FlightDetails book(@Valid FlightDetails flightDetails) {
 
         SeatType seatType = flightDetails.getSeatType();
         long number = flightDetails.getNumber();
@@ -283,19 +290,11 @@ public class FlightService {
         double luggageFee = flightDetails.getLuggageFee();
         FlightClass flightClass = flightDetails.getFlightClass();
 
-        // should exist
-        Flight flight = getByNumber(number);
+        // check flightDetails
+        Flight flight = checkBookingAttempt(flightDetails);
         
         double priceTotal = flight.getBasePrice();
 
-        // is flight booked out
-        if (flight.isBookedOut())
-            throw new IllegalStateException("Failed to book flight: " + number + ". Flight is booked out.");
-
-        // is seat available
-        if (!flight.isSeatAvailable(seatType))
-            throw new IllegalStateException("Failed to book flight. Seat type of " + seatType.name() + " is not available anymore. Please choose a different seat type.");
-        
         // reduce num seats
         flight.reduceNumSeats(seatType);
 
@@ -311,6 +310,33 @@ public class FlightService {
                                  luggageFee, 
                                  flightClass,
                                  priceTotal);
+    }
+
+
+    /**
+     * Check that flight number exists, that flight is not booked out and that a seat with given seatType is available.
+     * 
+     * @param flightDetails to check
+     * @return the flight that is booked if checks were successful
+     * @throws IllegalStateException if a check fails
+     */
+    private Flight checkBookingAttempt(@Valid FlightDetails flightDetails) {
+
+        long number = flightDetails.getNumber();
+        SeatType seatType = flightDetails.getSeatType();
+
+        // should exist
+        Flight flight = getByNumber(number);
+
+        // is flight booked out
+        if (flight.isBookedOut())
+            throw new IllegalStateException("Failed to book flight: " + number + ". Flight is booked out.");
+
+        // is seat available
+        if (!flight.isSeatAvailable(seatType))
+            throw new IllegalStateException("Failed to book flight. Seat type of " + seatType.name() + " is not available anymore. Please choose a different seat type.");
+    
+        return flight;
     }
 
 

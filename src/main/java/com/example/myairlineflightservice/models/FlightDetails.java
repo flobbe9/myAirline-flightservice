@@ -37,5 +37,5 @@ public class FlightDetails {
     private FlightClass flightClass;
 
     @DecimalMin(value = "0.0", message = "Price total cannot be negative.")
-    private double priceTotal;
+    private Double priceTotal;
 }
