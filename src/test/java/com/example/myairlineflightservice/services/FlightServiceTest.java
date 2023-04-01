@@ -1,5 +1,6 @@
 package com.example.myAirlineFlightservice.services;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -21,6 +22,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.models.FlightClass;
+import com.example.myAirlineFlightservice.models.FlightDetails;
+import com.example.myAirlineFlightservice.models.SeatType;
 
 
 /**
@@ -40,6 +43,8 @@ public class FlightServiceTest {
 
     Flight mockFlight;
     long mockFlightNumber;
+
+    FlightDetails flightDetails;
 
 
     @BeforeEach
@@ -62,6 +67,12 @@ public class FlightServiceTest {
                                     10, 
                                     70);
         this.mockFlightNumber = this.mockFlight.getNumber();
+
+        this.flightDetails = new FlightDetails(1l, 
+                                               SeatType.NORMAL, 
+                                               35.0, 
+                                               FlightClass.ECONOMY, 
+                                               null);
     }
 
 
@@ -165,5 +176,48 @@ public class FlightServiceTest {
         flightService.delete(mockFlightNumber);
 
         assertFalse(flightService.exists(mockFlightNumber));
+    }
+
+
+    @Test
+    void book_shouldThrowNumberInvalid() {
+
+        // // flightDetails should be valid
+        // assertDoesNotThrow(() -> flightService.book(flightDetails));
+
+        // // set non-existing number
+        // flightDetails.setNumber(10000l);
+
+        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+    }
+
+    
+    @Test
+    void book_shouldThrowBookedOut() {
+
+        // flightDetails should be valid
+        // assertDoesNotThrow(() -> flightService.book(flightDetails));
+
+        // // set num available seats to 0
+        // Flight hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
+        // hannoverFlight.setNumAvailableSeats(0);
+        // flightService.update(hannoverFlight);
+
+        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+    }
+    
+    
+    @Test
+    void book_shouldThrowSeatTypeNotAvailable() {
+
+        // flightDetails should be valid
+        // assertDoesNotThrow(() -> flightService.book(flightDetails));
+
+        // // set num available seats to 0
+        // Flight hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
+        // hannoverFlight.setNumAvailableSeats(0);
+        // flightService.update(hannoverFlight);
+
+        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
     }
 }
