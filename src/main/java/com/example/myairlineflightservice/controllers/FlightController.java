@@ -171,7 +171,7 @@ public class FlightController {
     public void save(@Validated(ValidFlight.class) @RequestBody Flight flight, Errors errors) {
 
         if (errors.hasErrors()) 
-            throw new ApiException(errors.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            throw new ApiException(getFirstDefaultErrorMessage(errors), HttpStatus.BAD_REQUEST);
 
         flightService.save(flight);
     }
@@ -188,7 +188,7 @@ public class FlightController {
     public void update(@Validated(ValidFlight.class) @RequestBody Flight flight, Errors errors) {
         
         if (errors.hasErrors()) 
-            throw new ApiException(errors.getAllErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            throw new ApiException(getFirstDefaultErrorMessage(errors), HttpStatus.BAD_REQUEST);
 
         flightService.update(flight);
     }
@@ -270,5 +270,11 @@ public class FlightController {
     public FlightDetails book(@Valid @RequestBody FlightDetails flightDetails) {
 
         return flightService.book(flightDetails);
+    }
+
+
+    private String getFirstDefaultErrorMessage(Errors errors) {
+
+        return errors.getAllErrors().get(0).getDefaultMessage();
     }
 }

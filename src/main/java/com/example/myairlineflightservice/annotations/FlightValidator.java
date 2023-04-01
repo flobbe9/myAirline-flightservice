@@ -3,6 +3,7 @@ package com.example.myAirlineFlightservice.annotations;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 
 import com.example.myAirlineFlightservice.models.Flight;
 import com.example.myAirlineFlightservice.services.AirlineService;
@@ -17,6 +18,7 @@ import jakarta.validation.ConstraintValidatorContext;
  * 
  * @since 0.0.1
  */
+@Validated
 public class FlightValidator implements ConstraintValidator<ValidFlight, Flight> {
 
     @Autowired
@@ -42,7 +44,7 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
     @Override
     public boolean isValid(Flight flight, ConstraintValidatorContext context) {
 
-        // disable default message
+        // set default message
         context.disableDefaultConstraintViolation();
 
         // set new default message
@@ -60,13 +62,9 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
      */
     private boolean isFlightValid(Flight flight, ConstraintValidatorContext context) {
 
-        return 
-            // airline should exist
-            airlineService.exists(flight.getAirlineName()) &&
-
-            // airports should exist
-            airportService.exists(flight.getDepartureAirportName()) &&
-            airportService.exists(flight.getArrivalAirportName()) &&
+        return
+            // related entities should exist
+            relatedEntitiesDoExist(flight, context) &&
 
             // dates should be in order
             areDatesInOrder(flight, context) &&
@@ -76,6 +74,29 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
 
             // number of seats should fit
             isNumAvailableSeatsValid(flight, context);
+    }
+
+
+    /**
+     * Checks that related entites of flight exist in db already.
+     * 
+     * @param flight to check the related entites of
+     * @param context to set the error message
+     * @return true if all related entities exist
+     */
+    private boolean relatedEntitiesDoExist(Flight flight, ConstraintValidatorContext context) {
+
+        // airline and airports should exist
+        boolean doesContextExist = airlineService.exists(flight.getAirlineName()) && 
+                                    airportService.exists(flight.getDepartureAirportName()) && 
+                                    airportService.exists(flight.getArrivalAirportName());
+
+        if (!doesContextExist) {
+            context.buildConstraintViolationWithTemplate("Flight invalid: At least one related entity does not exist.").addConstraintViolation();
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -113,10 +134,10 @@ public class FlightValidator implements ConstraintValidator<ValidFlight, Flight>
         boolean isTimeInOrder = flight.getDepartureTime().isBefore(flight.getArrivalTime());
 
         // check only if dates are the same
-        if (flight.getDepartureDate().equals(flight.getArrivalDate())) {
+        if (flight.getDepartureDate().equals(flight.getArrivalDate()) && !isTimeInOrder) {
             context.buildConstraintViolationWithTemplate("Flight invalid: Time out of order.").addConstraintViolation();
 
-            return isTimeInOrder;
+            return false;
         }
         
         return true;
