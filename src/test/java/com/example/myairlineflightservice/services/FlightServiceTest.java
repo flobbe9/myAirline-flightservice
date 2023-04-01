@@ -45,6 +45,7 @@ public class FlightServiceTest {
     long mockFlightNumber;
 
     FlightDetails flightDetails;
+    Flight hannoverFlight;
 
 
     @BeforeEach
@@ -73,6 +74,8 @@ public class FlightServiceTest {
                                                35.0, 
                                                FlightClass.ECONOMY, 
                                                null);
+        this.hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
+
     }
 
 
@@ -196,14 +199,13 @@ public class FlightServiceTest {
     void book_shouldThrowBookedOut() {
 
         // flightDetails should be valid
-        // assertDoesNotThrow(() -> flightService.book(flightDetails));
+        assertDoesNotThrow(() -> flightService.book(flightDetails));
 
-        // // set num available seats to 0
-        // Flight hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
-        // hannoverFlight.setNumAvailableSeats(0);
-        // flightService.update(hannoverFlight);
+        // set num available seats to 0
+        hannoverFlight.setNumAvailableSeats(0);
+        flightService.update(hannoverFlight);
 
-        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+        assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
     }
     
     
@@ -211,13 +213,27 @@ public class FlightServiceTest {
     void book_shouldThrowSeatTypeNotAvailable() {
 
         // flightDetails should be valid
-        // assertDoesNotThrow(() -> flightService.book(flightDetails));
+        assertDoesNotThrow(() -> flightService.book(flightDetails));
 
-        // // set num available seats to 0
-        // Flight hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
-        // hannoverFlight.setNumAvailableSeats(0);
-        // flightService.update(hannoverFlight);
+        // set num available seats to 0
+        hannoverFlight.setNumNormalSeats(0);
+        flightService.update(hannoverFlight);
 
-        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+        assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+    }
+
+
+    @Test 
+    void book_shouldUpdateFlight() {
+
+        // old values
+        int numNormalSeats = hannoverFlight.getNumNormalSeats();
+        int numAvailableSeats = hannoverFlight.getNumAvailableSeats();
+
+        flightService.book(flightDetails);
+
+        // should be one less
+        assertEquals(numNormalSeats - 1, hannoverFlight.getNumNormalSeats());
+        assertEquals(numAvailableSeats - 1, hannoverFlight.getNumAvailableSeats());
     }
 }
