@@ -29,7 +29,8 @@ import com.example.myAirlineFlightservice.models.SeatType;
 /**
  * Test class for {@link FlightService}. 
  * <p>
- * Depends on the mock data from resources/data.sql. Uses Hamburg airport as test subject.
+ * Depends on the mock data from resources/data.sql. Uses Hannover and flight 
+ * number 4 as test subject.
  * 
  * @since 0.0.1
  */
@@ -42,20 +43,19 @@ public class FlightServiceTest {
     FlightService flightService;
 
     Flight mockFlight;
-    long mockFlightNumber;
+    long mockFlightNumber = 6l;
 
     FlightDetails flightDetails;
-    Flight hannoverFlight;
 
 
     @BeforeEach
     void setUp() {
 
         this.mockFlight = new Flight(5l, 
-                                    6l, 
+                                    mockFlightNumber, 
                                     "Mock Airline", 
-                                    "Some airport", 
-                                    "Some other airport", 
+                                    "Hannover airport", 
+                                    "Hannover airport", 
                                     LocalTime.of(10, 0), 
                                     LocalTime.of(13, 0), 
                                     LocalDate.of(3000, 4, 1), 
@@ -67,15 +67,12 @@ public class FlightServiceTest {
                                     10, 
                                     10, 
                                     70);
-        this.mockFlightNumber = this.mockFlight.getNumber();
 
-        this.flightDetails = new FlightDetails(1l, 
+        this.flightDetails = new FlightDetails(4l, 
                                                SeatType.NORMAL, 
                                                35.0, 
                                                FlightClass.ECONOMY, 
                                                null);
-        this.hannoverFlight = flightService.getByNumber(flightDetails.getNumber());
-
     }
 
 
@@ -91,14 +88,13 @@ public class FlightServiceTest {
     @Order(0)
     void getAllByAirport_shouldNotFindAirport() {
 
-        assertThrows(IllegalStateException.class, () -> flightService.getAllByAirport(mockFlight.getDepartureAirportName()));
+        assertThrows(IllegalStateException.class, () -> flightService.getAllByAirport("super random airport"));
     }
 
 
     @Test
     @Order(0)
     void update_shouldNotFindFlight() {
-
         assertThrows(IllegalStateException.class, () -> flightService.update(mockFlight));
     }
 
@@ -111,7 +107,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    @Order(0)
+    @Order(5)
     void delete_shouldNotFindFlight() {
         
         assertThrows(IllegalStateException.class, () -> flightService.delete(mockFlightNumber));
@@ -185,55 +181,79 @@ public class FlightServiceTest {
     @Test
     void book_shouldThrowNumberInvalid() {
 
-        // // flightDetails should be valid
-        // assertDoesNotThrow(() -> flightService.book(flightDetails));
 
-        // // set non-existing number
-        // flightDetails.setNumber(10000l);
+        // flightDetails should be valid
+        assertDoesNotThrow(() -> flightService.book(flightDetails));
 
-        // assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+        // set non-existing number
+        flightDetails.setNumber(10000l);
+
+        assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
     }
 
     
     @Test
     void book_shouldThrowBookedOut() {
 
+        Flight flight = flightService.getByNumber(flightDetails.getNumber());
+        int numAvailableSeats = flight.getNumAvailableSeats();
+        
         // flightDetails should be valid
         assertDoesNotThrow(() -> flightService.book(flightDetails));
-
+        
         // set num available seats to 0
-        hannoverFlight.setNumAvailableSeats(0);
-        flightService.update(hannoverFlight);
+        flight.setNumAvailableSeats(0);
+        flightService.update(flight);
 
         assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+
+        // clean up
+        flight.setNumAvailableSeats(numAvailableSeats);
+        flightService.update(flight);
     }
     
     
     @Test
     void book_shouldThrowSeatTypeNotAvailable() {
 
+        Flight flight = flightService.getByNumber(flightDetails.getNumber());
+        int numNormalSeats = flight.getNumNormalSeats();
+
         // flightDetails should be valid
         assertDoesNotThrow(() -> flightService.book(flightDetails));
 
         // set num available seats to 0
-        hannoverFlight.setNumNormalSeats(0);
-        flightService.update(hannoverFlight);
+        flight.setNumNormalSeats(0);
+        flightService.update(flight);
 
         assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
+
+        // clean up
+        flight.setNumNormalSeats(numNormalSeats);
+        flightService.update(flight);
     }
 
 
-    @Test 
+    @Test
     void book_shouldUpdateFlight() {
+        
+        Flight flight = flightService.getByNumber(flightDetails.getNumber());
 
         // old values
-        int numNormalSeats = hannoverFlight.getNumNormalSeats();
-        int numAvailableSeats = hannoverFlight.getNumAvailableSeats();
+        int numNormalSeatsOld = flight.getNumNormalSeats();
+        int numAvailableSeatsOld = flight.getNumAvailableSeats();
 
         flightService.book(flightDetails);
 
+        // get updated flight
+        flight = flightService.getByNumber(flightDetails.getNumber());
+
+        // new values
+        int numNormalSeatsNew = flight.getNumNormalSeats();
+        int numAvailableSeatsNew = flight.getNumAvailableSeats();
+
         // should be one less
-        assertEquals(numNormalSeats - 1, hannoverFlight.getNumNormalSeats());
-        assertEquals(numAvailableSeats - 1, hannoverFlight.getNumAvailableSeats());
+        assertEquals(numNormalSeatsOld - 1, numNormalSeatsNew);
+        assertEquals(numAvailableSeatsOld - 1, numAvailableSeatsNew);
     }
 }

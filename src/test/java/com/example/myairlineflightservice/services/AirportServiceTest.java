@@ -147,7 +147,6 @@ public class AirportServiceTest {
         // delete related entites
         flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(munichAirportName, munichAirportName);
 
-        System.out.println(flightRepository.existsByDepartureAirportNameOrArrivalAirportName(munichAirportName, munichAirportName));
         airportService.deleteAllByCityName(munichAirport.getCityName());
 
         assertFalse(airportService.exists(munichAirportName));
