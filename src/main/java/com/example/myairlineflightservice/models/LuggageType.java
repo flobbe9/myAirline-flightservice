@@ -6,17 +6,15 @@ import lombok.Getter;
 
 
 /**
- * Enum representing a type of seat on a flight.
+ * Enum representing a type of luggage a user can book for their flight.
  * 
  * @since 0.0.1
  */
 @Getter
 @AllArgsConstructor
-public enum SeatType {
-    NORMAL(0.0),
-    CORRIDOR(5.0),
-    WINDOW(5.0),
-    FOOT_ROOM(5.0);
+public enum LuggageType {
+    CABBIN_LUGGAGE(0.0),
+    ADDITIONAL_LUGGAGE(35.0);
 
     private double fee;
 

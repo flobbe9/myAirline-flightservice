@@ -58,6 +58,17 @@ public class AirportService extends AbstractService<Airport> {
 
 
     /**
+     * Find all airports in db.
+     * 
+     * @return list with airports (might be empty)
+     */
+    public List<Airport> getAll() {
+
+        return airportRepository.findAll();
+    }
+
+
+    /**
      * Save given airport in db.
      * 
      * @param airport to save in db

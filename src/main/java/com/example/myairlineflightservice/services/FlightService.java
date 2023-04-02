@@ -150,6 +150,38 @@ public class FlightService {
 
 
     /**
+     * Find all flights that match the front-end form. 
+     * <p>
+     * Consider departure airport, arrival airport, departure date and any time after departureTime.
+     * 
+     * @param departureAirportName start airport
+     * @param arrivalAirportName destination airport
+     * @param departureDate date of flight
+     * @param departureTime earliest start time
+     * @return list of flights matching the requirements
+     * @throws IllegalStateException if airports dont't exist or date is in the past
+     */
+    public List<Flight> getAllByFrontEndForm(@NotBlank String departureAirportName,
+                                             @NotBlank String arrivalAirportName,
+                                             @NotNull LocalDate departureDate,
+                                             @NotNull LocalTime departureTime) {
+
+        // airports should exist
+        airportService.getByName(departureAirportName);
+        airportService.getByName(arrivalAirportName);
+
+        // date should be valid
+        if (!isDateValid(departureDate))
+            throw new IllegalStateException("Departure date cannot be in the past.");
+
+        return flightRepository.findAllByDepartureAirportNameAndArrivalAirportNameAndDepartureDateAndDepartureTimeAfter(departureAirportName, 
+                                                                                                                        arrivalAirportName, 
+                                                                                                                        departureDate, 
+                                                                                                                        departureTime);
+    }
+
+
+    /**
      * Save given flight in db.
      * 
      * @param flight to save in db
@@ -286,7 +318,7 @@ public class FlightService {
 
         SeatType seatType = flightDetails.getSeatType();
         long number = flightDetails.getNumber();
-        double seatFee = seatType.getSeatFee();
+        double seatFee = seatType.getFee();
         double luggageFee = flightDetails.getLuggageFee();
         FlightClass flightClass = flightDetails.getFlightClass();
 

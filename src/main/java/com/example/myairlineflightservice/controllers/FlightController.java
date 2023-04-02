@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,7 @@ import jakarta.validation.constraints.NotNull;
 @RestController
 @RequestMapping("/flight")
 @Validated
+@CrossOrigin
 public class FlightController {
     
     @Autowired
@@ -157,6 +159,22 @@ public class FlightController {
                                             @RequestParam FlightClass flightClass) {
 
         return flightService.getAllByFlightClass(flightClass);
+    }
+
+
+    @GetMapping("/search")
+    @Operation(summary = "Find all flights matching the front end form search.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned list of flights.", content = {@Content(mediaType = "application/json")}),
+        @ApiResponse(responseCode = "400", description = "Invalid params.", content = {@Content(mediaType = "application/json")}),
+        @ApiResponse(responseCode = "500", description = "An airport does not exist or the date is invalid.", content = {@Content(mediaType = "application/json")}),
+    })
+    public List<Flight> search(@NotBlank(message = "Departure airport cannot be blank.") String departureAirportName,
+                                @NotBlank(message = "Arrival airport cannot be blank.") String arrivalAirportName,
+                                @NotNull(message = "Departure date cannot be null.") LocalDate departureDate,
+                                @NotNull(message = "Departure time cannot be null.") LocalTime departureTime) {
+
+        return flightService.getAllByFrontEndForm(departureAirportName, arrivalAirportName, departureDate, departureTime);
     }
 
 

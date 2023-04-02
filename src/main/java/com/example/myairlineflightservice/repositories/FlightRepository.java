@@ -41,6 +41,11 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 
     List<Flight> findAllByNumAvailableSeatsGreaterThanEqual(int numSeatsAvailable);
 
+    List<Flight> findAllByDepartureAirportNameAndArrivalAirportNameAndDepartureDateAndDepartureTimeAfter(String departureAirportName, 
+                                                                                                         String arrivalAirportName, 
+                                                                                                         LocalDate departureDate,
+                                                                                                         LocalTime departureTime);
+
     @Transactional
     void deleteByNumber(long number);
 

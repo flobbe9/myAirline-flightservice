@@ -1,8 +1,11 @@
 package com.example.myAirlineFlightservice.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +37,7 @@ import jakarta.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/airport")
 @Validated
+@CrossOrigin
 public class AirportController {
     
     @Autowired
@@ -63,6 +67,17 @@ public class AirportController {
     public Airport getById(@Min(value = 1, message = "Id must be greater than 0.") @PathVariable long id) {
 
         return airportService.getById(id);
+    }
+
+
+    @GetMapping("/getAll")
+    @Operation(summary = "Get all airports in db.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned a list.", content = {@Content(mediaType = "application/json")}),
+    })
+    public List<Airport> getAll() {
+
+        return airportService.getAll();
     }
 
 
