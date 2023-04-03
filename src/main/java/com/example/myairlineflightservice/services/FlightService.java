@@ -367,6 +367,10 @@ public class FlightService {
         // is seat available
         if (!flight.isSeatAvailable(seatType))
             throw new IllegalStateException("Failed to book flight. Seat type of " + seatType.name() + " is not available anymore. Please choose a different seat type.");
+
+        // is filghtClass available
+        if (!flight.getFlightClasses().contains(flightDetails.getFlightClass()))
+            throw new IllegalStateException("Failed to book flight. Flight class " + flightDetails.getFlightClass() + " is not available for this flight. Please choose a different flight class.");
     
         return flight;
     }

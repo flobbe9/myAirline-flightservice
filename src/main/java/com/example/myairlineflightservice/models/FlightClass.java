@@ -15,7 +15,8 @@ import lombok.Getter;
 public enum FlightClass {
 
     ECONOMY(0.0),
-    BUSINESS(30.0);
+    BUSINESS(30.0),
+    FIRST(50.0);
 
     private Double fee;
 
