@@ -45,8 +45,8 @@ import jakarta.validation.constraints.NotNull;
  */
 @RestController
 @RequestMapping("/flight")
-@Validated
-@CrossOrigin
+@Validated  
+@CrossOrigin(origins = "http://localhost:3000")
 public class FlightController {
     
     @Autowired
