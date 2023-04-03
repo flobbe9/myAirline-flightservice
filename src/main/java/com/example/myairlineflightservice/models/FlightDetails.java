@@ -23,8 +23,8 @@ import lombok.Setter;
 @EqualsAndHashCode
 public class FlightDetails {
     
-    @Min(value = 0, message = "Number cannot be negative.")
-    private long number;
+    @Min(value = 1, message = "Id cannot be negative.")
+    private long id;
 
     @NotNull(message = "Seat type cannot be null.")
     private SeatType seatType;

@@ -186,7 +186,7 @@ public class FlightServiceTest {
         assertDoesNotThrow(() -> flightService.book(flightDetails));
 
         // set non-existing number
-        flightDetails.setNumber(10000l);
+        flightDetails.setId(10000l);
 
         assertThrows(IllegalStateException.class, () -> flightService.book(flightDetails));
     }
@@ -195,7 +195,7 @@ public class FlightServiceTest {
     @Test
     void book_shouldThrowBookedOut() {
 
-        Flight flight = flightService.getByNumber(flightDetails.getNumber());
+        Flight flight = flightService.getByNumber(flightDetails.getId());
         int numAvailableSeats = flight.getNumAvailableSeats();
         
         // flightDetails should be valid
@@ -216,7 +216,7 @@ public class FlightServiceTest {
     @Test
     void book_shouldThrowSeatTypeNotAvailable() {
 
-        Flight flight = flightService.getByNumber(flightDetails.getNumber());
+        Flight flight = flightService.getByNumber(flightDetails.getId());
         int numNormalSeats = flight.getNumNormalSeats();
 
         // flightDetails should be valid
@@ -237,7 +237,7 @@ public class FlightServiceTest {
     @Test
     void book_shouldUpdateFlight() {
         
-        Flight flight = flightService.getByNumber(flightDetails.getNumber());
+        Flight flight = flightService.getByNumber(flightDetails.getId());
 
         // old values
         int numNormalSeatsOld = flight.getNumNormalSeats();
@@ -246,7 +246,7 @@ public class FlightServiceTest {
         flightService.book(flightDetails);
 
         // get updated flight
-        flight = flightService.getByNumber(flightDetails.getNumber());
+        flight = flightService.getByNumber(flightDetails.getId());
 
         // new values
         int numNormalSeatsNew = flight.getNumNormalSeats();

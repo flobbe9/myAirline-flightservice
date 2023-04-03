@@ -317,7 +317,7 @@ public class FlightService {
     public FlightDetails book(@Valid FlightDetails flightDetails) {
 
         SeatType seatType = flightDetails.getSeatType();
-        long number = flightDetails.getNumber();
+        long id = flightDetails.getId();
         double seatFee = seatType.getFee();
         double luggageFee = flightDetails.getLuggageFee();
         FlightClass flightClass = flightDetails.getFlightClass();
@@ -337,7 +337,7 @@ public class FlightService {
         update(flight);
 
         // retun FlightDetails
-        return new FlightDetails(number, 
+        return new FlightDetails(id, 
                                  seatType, 
                                  luggageFee, 
                                  flightClass,
@@ -346,7 +346,7 @@ public class FlightService {
 
 
     /**
-     * Check that flight number exists, that flight is not booked out and that a seat with given seatType is available.
+     * Check that flight id exists, that flight is not booked out and that a seat with given seatType is available.
      * 
      * @param flightDetails to check
      * @return the flight that is booked if checks were successful
@@ -354,15 +354,15 @@ public class FlightService {
      */
     private Flight checkBookingAttempt(@Valid FlightDetails flightDetails) {
 
-        long number = flightDetails.getNumber();
+        long id = flightDetails.getId();
         SeatType seatType = flightDetails.getSeatType();
 
         // should exist
-        Flight flight = getByNumber(number);
+        Flight flight = getById(id);
 
         // is flight booked out
         if (flight.isBookedOut())
-            throw new IllegalStateException("Failed to book flight: " + number + ". Flight is booked out.");
+            throw new IllegalStateException("Failed to book flight: " + id + ". Flight is booked out.");
 
         // is seat available
         if (!flight.isSeatAvailable(seatType))
