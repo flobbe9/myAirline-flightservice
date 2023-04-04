@@ -1,5 +1,7 @@
 FROM gradle:jdk17-alpine
 
-ADD / .
+WORKDIR /app/flightservice
+
+COPY . /app/flightservice/
 
 ENTRYPOINT gradle bootRun
