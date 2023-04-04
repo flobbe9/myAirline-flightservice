@@ -40,7 +40,7 @@ public class AirportControllerTest {
     @BeforeEach
     void setUp() {
 
-        this.airport = new Airport("Munich airport", "Munich");
+        this.airport = new Airport("Muenchen airport", "Muenchen");
     }
 
 
@@ -73,7 +73,7 @@ public class AirportControllerTest {
     @Test
     void delete_shouldBeValidName() throws Exception {
         
-        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airport/delete?name=Munich airport"))
+        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airport/delete?name=Muenchen airport"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

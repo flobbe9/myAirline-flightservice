@@ -40,7 +40,7 @@ public class AirlineControllerTest {
     @BeforeEach
     void setUp() {
 
-        this.airline = new Airline("Munich airline");
+        this.airline = new Airline("Muenchen airline");
     }
 
 
@@ -73,7 +73,7 @@ public class AirlineControllerTest {
     @Test
     void delete_shouldBeValidName() throws Exception {
         
-        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airline/delete?name=Munich airline"))
+        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/airline/delete?name=Muenchen airline"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

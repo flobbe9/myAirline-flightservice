@@ -28,7 +28,7 @@ public class Airport extends AbstractEntity {
     @GenericGenerator(name = "airport_id_generator", 
                       strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
                       parameters = {
-                        @Parameter(name ="initial_value", value = "7")
+                        @Parameter(name ="initial_value", value = "16")
                       })
     @GeneratedValue(generator = "airport_id_generator")
     private Long id;

@@ -50,7 +50,7 @@ public class FlightControllerTest {
         this.flight = new Flight(6l, 
                                  5l, 
                                  "Lufthansa", 
-                                 "Munich airport", 
+                                 "Muenchen airport", 
                                  "Hamburg airport", 
                                  LocalTime.of(10, 0), 
                                  LocalTime.of(13, 0), 

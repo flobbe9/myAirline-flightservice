@@ -22,7 +22,7 @@ import com.example.myAirlineFlightservice.repositories.FlightRepository;
 /**
  * Test class for {@link AirportService}. 
  * <p>
- * Depends on the mock data from resources/data.sql. Uses Munich as test subject
+ * Depends on the mock data from resources/data.sql. Uses Muenchen as test subject
  * 
  * @since 0.0.1
  */
@@ -37,8 +37,8 @@ public class AirportServiceTest {
     @Autowired
     FlightRepository flightRepository;
 
-    Airport munichAirport;
-    String munichAirportName;
+    Airport muenchnerAirport;
+    String muenchnerAirportName;
 
     Airport mockAirport;
     String mockAirportName;
@@ -47,12 +47,12 @@ public class AirportServiceTest {
     @BeforeEach
     void setUp() {
 
-        this.munichAirport = new Airport("Munich airport", "Munich");
-        this.munichAirport.setId(6l);
-        this.munichAirportName = munichAirport.getName();
+        this.muenchnerAirport = new Airport("Muenchner airport", "Muenchen");
+        this.muenchnerAirport.setId(6l);
+        this.muenchnerAirportName = muenchnerAirport.getName();
 
         this.mockAirport = new Airport("Mock airport", "Mock city");
-        this.mockAirport.setId(7l);
+        this.mockAirport.setId(16l);
         this.mockAirportName = mockAirport.getName();
     }
 
@@ -78,7 +78,7 @@ public class AirportServiceTest {
     void save_shouldSaveMockAirport() {
 
         // set valid city
-        mockAirport.setCityName("Munich");
+        mockAirport.setCityName("Muenchen");
 
         assertDoesNotThrow(() -> airportService.save(mockAirport));
     }
@@ -88,7 +88,7 @@ public class AirportServiceTest {
     @Order(2)
     void delete_shouldFindRelatedEntites() {
 
-        assertThrows(IllegalStateException.class, () -> airportService.delete(munichAirportName));
+        assertThrows(IllegalStateException.class, () -> airportService.delete(muenchnerAirportName));
     }
             
     
@@ -96,7 +96,7 @@ public class AirportServiceTest {
     @Order(3)
     void deleteAllByCityName_shouldFindRelatedEntites() {
         
-        assertThrows(IllegalStateException.class, () -> airportService.deleteAllByCityName(munichAirportName));
+        assertThrows(IllegalStateException.class, () -> airportService.deleteAllByCityName(muenchnerAirportName));
     }
 
 
@@ -136,7 +136,7 @@ public class AirportServiceTest {
     @Order(4)
     void save_shouldFindDuplicateAirport() {
         
-        assertThrows(IllegalStateException.class, () -> airportService.save(munichAirport));
+        assertThrows(IllegalStateException.class, () -> airportService.save(muenchnerAirport));
     }
 
 
@@ -145,11 +145,11 @@ public class AirportServiceTest {
     void deleteAllByCityName_shouldNotFindAirportAfterwards() {
 
         // delete related entites
-        flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(munichAirportName, munichAirportName);
+        flightRepository.deleteAllByDepartureAirportNameOrArrivalAirportName(muenchnerAirportName, muenchnerAirportName);
 
-        airportService.deleteAllByCityName(munichAirport.getCityName());
+        airportService.deleteAllByCityName(muenchnerAirport.getCityName());
 
-        assertFalse(airportService.exists(munichAirportName));
+        assertFalse(airportService.exists(muenchnerAirportName));
     }
 
     

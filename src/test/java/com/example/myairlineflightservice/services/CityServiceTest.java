@@ -55,7 +55,7 @@ public class CityServiceTest {
         this.berlinName = berlin.getName();
 
         this.mockCity = new City("Mock city", "Some country");
-        this.mockCity.setId(7l);
+        this.mockCity.setId(16l);
         this.mockCityName = mockCity.getName();
     }
 

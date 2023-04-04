@@ -49,7 +49,7 @@ public class Flight {
     @GenericGenerator(name = "flight_id_generator", 
                     strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
                     parameters = {
-                        @Parameter(name ="initial_value", value = "5")
+                        @Parameter(name ="initial_value", value = "29")
                     })
     @GeneratedValue(generator = "flight_id_generator")
     private Long id;
@@ -70,17 +70,19 @@ public class Flight {
     private String arrivalAirportName;
 
     @NotNull(message = "DepartureTime cannot be null.", groups = {ValidFlight.class})
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime departureTime;
 
     @NotNull(message = "ArrivalTime cannot be null.", groups = {ValidFlight.class})
+    @JsonFormat(pattern = "HH:mm")
     private LocalTime arrivalTime;
 
     @NotNull(message = "DepartureDate cannot be null.", groups = {ValidFlight.class})
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate departureDate;
 
     @NotNull(message = "ArrivalDate cannot be null.", groups = {ValidFlight.class})
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "dd.MM.yyyy")
     private LocalDate arrivalDate;
 
     @ElementCollection(fetch = FetchType.EAGER)

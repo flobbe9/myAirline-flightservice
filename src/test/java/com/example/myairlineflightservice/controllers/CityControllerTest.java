@@ -40,7 +40,7 @@ public class CityControllerTest {
     @BeforeEach
     void setUp() {
 
-        this.city = new City("Munich", "Germany");
+        this.city = new City("Muenchen", "Germany");
     }
 
 
@@ -73,7 +73,7 @@ public class CityControllerTest {
     @Test
     void delete_shouldBeValidName() throws Exception {
         
-        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/city/delete?name=Munich"))
+        mockMvc.perform(delete(HttpRequestSender.BASE_URL + "/city/delete?name=Muenchen"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
