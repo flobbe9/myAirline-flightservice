@@ -43,7 +43,7 @@ public class FlightServiceTest {
     FlightService flightService;
 
     Flight mockFlight;
-    long mockFlightNumber = 6l;
+    long mockFlightNumber = 29l;
 
     FlightDetails flightDetails;
 
@@ -51,7 +51,7 @@ public class FlightServiceTest {
     @BeforeEach
     void setUp() {
 
-        this.mockFlight = new Flight(5l, 
+        this.mockFlight = new Flight(29l, 
                                     mockFlightNumber, 
                                     "Mock Airline", 
                                     "Hannover airport", 
