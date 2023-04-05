@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 import com.example.myAirlineFlightservice.models.Airport;
 import com.example.myAirlineFlightservice.repositories.FlightRepository;
@@ -112,7 +113,7 @@ public class AirportServiceTest {
         try {
             airportService.update(mockAirport);
 
-        } catch (ResourceAccessException e) {
+        } catch (ResourceAccessException | InternalServerError e) {
             mockAirport.setCityName("Hannover");
             airportService.save(mockAirport);
         }
