@@ -13,7 +13,6 @@ services:
             MYSQL_ROOT_PASSWORD: mysql
 
     flight-service:
-        build: .
         image: flobbe10/myairline-flightservice:0.0.1
         container_name: myairline-flightservice
         ports: 
@@ -25,3 +24,11 @@ services:
             - SPRING_DATASOURCE_USERNAME=mysql
             - SPRING_DATASOURCE_PASSWORD=mysql
             - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+    
+    frontend:
+        image: flobbe10/myairline-frontend:0.0.1
+        container_name: myairline-frontend
+        ports:
+            - 3000:3000
+        depends_on:
+            - flight-service
