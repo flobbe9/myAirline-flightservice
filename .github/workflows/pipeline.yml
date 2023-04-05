@@ -1,4 +1,4 @@
-name: myAirline
+name: myAirline-flightservice
 run-name: ${{ github.event.head_commit.message }}
 on: [push]
 jobs:
@@ -14,8 +14,9 @@ jobs:
         with: 
           distribution: 'temurin'
           java-version: '17'
-      - run: docker-compose -f "docker-compose-db.yml" up -d
-      - run: gradle clean build
+      # - run: docker-compose -f "docker-compose-db.yml" up -d
+      - run: gradle bootJar
+      - run: java -jar myairline-flight-service-0.0.1-SNAPSHOT.jar --spring.config.location=classpath:/h2.application.properties
 
       # Push to DockerHub
       - name: Set up QEMU
