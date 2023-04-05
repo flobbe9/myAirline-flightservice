@@ -70,15 +70,15 @@ public class AirportController {
     }
 
 
-    @GetMapping("/getAll")
-    @Operation(summary = "Get all airports in db.")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Returned a list.", content = {@Content(mediaType = "application/json")}),
-    })
-    public List<Airport> getAll() {
+    // @GetMapping("/getAll")
+    // @Operation(summary = "Get all airports in db.")
+    // @ApiResponses(value = {
+    //     @ApiResponse(responseCode = "200", description = "Returned a list.", content = {@Content(mediaType = "application/json")}),
+    // })
+    // public List<Airport> getAll() {
 
-        return airportService.getAll();
-    }
+    //     return airportService.getAll();
+    // }
 
 
     @PostMapping("/save")
