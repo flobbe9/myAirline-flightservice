@@ -1,6 +1,6 @@
 # myAirline-flightservice
 Spring-Boot REST API for myAirline (https://github.com/flobbe10/myAirline). <br>
-Depends on a MySQL db.
+Depends on a Postgres db.
 
 ## Run
 1. ```docker-compose up``` with 'docker-compose.yml' file from this repo.
