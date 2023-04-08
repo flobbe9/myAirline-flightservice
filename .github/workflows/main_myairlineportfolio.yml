@@ -1,8 +1,6 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+name: myAirline-flightservice CD
 
-name: Build and deploy JAR app to Azure Web App - myAirlinePortfolio
-
+run-name: ${{ github.event.head_commit.message }}
 on:
   push:
     branches:
@@ -21,7 +19,7 @@ jobs:
         with:
           java-version: '17'
 
-      - run: docker-compose -f "docker-compose-db.yml" up -d
+      # - run: docker-compose -f "docker-compose-db.yml" up -d
 
       - name: Build with Gradle
         run: gradle clean build
