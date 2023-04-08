@@ -21,6 +21,8 @@ jobs:
         with:
           java-version: '17'
 
+      - run: docker-compose -f "docker-compose-db.yml" up -d
+
       - name: Build with Gradle
         run: gradle clean build
 
