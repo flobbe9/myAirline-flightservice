@@ -169,10 +169,10 @@ public class FlightController {
         @ApiResponse(responseCode = "400", description = "Invalid params.", content = {@Content(mediaType = "application/json")}),
         @ApiResponse(responseCode = "500", description = "An airport does not exist or the date is invalid.", content = {@Content(mediaType = "application/json")}),
     })
-    public List<Flight> search(@NotBlank(message = "Departure airport cannot be blank.") String departureAirportName,
-                                @NotBlank(message = "Arrival airport cannot be blank.") String arrivalAirportName,
-                                @NotNull(message = "Departure date cannot be null.") LocalDate departureDate,
-                                @NotNull(message = "Departure time cannot be null.") LocalTime departureTime) {
+    public List<Flight> search(@NotBlank(message = "Departure airport cannot be blank.") @RequestParam String departureAirportName,
+                                @NotBlank(message = "Arrival airport cannot be blank.") @RequestParam String arrivalAirportName,
+                                @NotNull(message = "Departure date cannot be null.") @RequestParam LocalDate departureDate,
+                                @NotNull(message = "Departure time cannot be null.") @RequestParam LocalTime departureTime) {
 
         return flightService.getAllByFrontEndForm(departureAirportName, arrivalAirportName, departureDate, departureTime);
     }
