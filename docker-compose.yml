@@ -12,7 +12,7 @@ services:
             POSTGRES_DB: myAirline
 
     flight-service:
-        image: flobbe10/myairline-flightservice:0.0.1
+        image: flobbe9/myairline-flightservice:0.0.1
         container_name: myairline-flightservice
         ports: 
             - 4001:4001

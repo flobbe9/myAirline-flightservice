@@ -1,5 +1,5 @@
 # myAirline-flightservice
-Spring-Boot REST API for myAirline (https://github.com/flobbe10/myAirline). <br>
+Spring-Boot REST API for myAirline (https://github.com/flobbe9/myAirline). <br>
 Depends on a Postgres db.
 
 ## Run
@@ -13,4 +13,4 @@ https://www.postman.com/grey-shuttle-863417/workspace/myairline/collection/23751
 http://localhost:4001/swagger-ui/index.html#/
 
 ## Docker image
-```docker pull flobbe10/myairline-flightservice``` <br>
+```docker pull flobbe9/myairline-flightservice``` <br>
